@@ -1,0 +1,9 @@
+ui = None
+vencal = None
+about = None
+status = None
+dialog_open = None
+settings = None
+settings_ui = None
+theme_manager = None
+disabled_line_edits = []

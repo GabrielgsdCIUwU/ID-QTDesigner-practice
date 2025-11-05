@@ -1,0 +1,342 @@
+/* Global Application Styles */
+QWidget {
+    background-color: #1f2937;
+    color: #f3f4f6;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 14px;
+}
+
+QMainWindow {
+    background-color: #111827;
+}
+
+/* Menu Dropdown */
+QMenu {
+    background-color: #1f2937;
+    color: #f3f4f6;
+    border: 1px solid #374151;
+    border-radius: 6px;
+    padding: 4px;
+}
+
+QMenu::item {
+    padding: 8px 32px;
+    border-radius: 4px;
+}
+
+QMenu::item:selected {
+    background-color: #374151;
+}
+
+
+/* Tab Widget */
+QTabWidget::pane {
+    border: 1px solid #374151;
+    background-color: #1f2937;
+    border-radius: 6px;
+}
+
+QTabBar::tab {
+    background-color: #374151;
+    color: #9ca3af;
+    padding: 8px 16px;
+    border: 1px solid #4b5563;
+    border-bottom: none;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    margin-right: 2px;
+}
+
+QTabBar::tab:selected {
+    background-color: #1f2937;
+    color: #f3f4f6;
+    border-bottom: 2px solid #3b82f6;
+}
+
+QTabBar::tab:hover {
+    background-color: #4b5563;
+}
+
+
+
+
+/* Labels */
+QLabel {
+    color: #e5e7eb;
+    background-color: transparent;
+    padding-top: 7px;
+}
+
+#lbl_list_cust {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* Line Edit (Text Inputs) */
+QLineEdit {
+    background-color: #374151;
+    color: #f3f4f6;
+    border: 1px solid #4b5563;
+    border-radius: 6px;
+    padding: 8px 12px;
+    selection-background-color: #3b82f6;
+    selection-color: #ffffff;
+}
+
+QLineEdit::hover {
+    border: 1px solid #6b7280;
+}
+
+QLineEdit:focus {
+    border: 1px solid #60a5fa;
+    background-color: #4b5563;
+}
+
+QLineEdit:disabled {
+    background-color: #1f2937;
+    color: #6b7280;
+}
+
+/* Text Edit / Plain Text Edit */
+QTextEdit, QPlainTextEdit {
+    background-color: #374151;
+    color: #f3f4f6;
+    border: 1px solid #4b5563;
+    border-radius: 6px;
+    padding: 8px;
+    selection-background-color: #3b82f6;
+}
+
+QTextEdit:focus, QPlainTextEdit:focus {
+    border: 1px solid #60a5fa;
+}
+
+
+/* Combo Box (Dropdown) */
+QComboBox {
+    background-color: #374151;
+    color: #f3f4f6;
+    border: 1px solid #4b5563;
+    border-radius: 6px;
+    padding: 8px 12px;
+    min-width: 100px;
+}
+
+QComboBox:hover {
+    border: 1px solid #6b7280;
+}
+
+QComboBox:focus {
+    border: 1px solid #60a5fa;
+}
+
+
+
+
+/*Buttons*/
+QPushButton {
+    background-color: #4b5563;
+    color: #f3f4f6;
+}
+
+QPushButton:hover {
+    background-color: #374151;
+}
+
+QPushButton:pressed {
+    background-color: #1f2937;
+}
+
+QPushButton:disabled {
+    background-color: #374151;
+    color: #6b7280;
+}
+
+/*Save and Modify buttons*/
+QPushButton#btn_save_cust, QPushButton#btn_modify_cust, QPushButton#btn_clear {
+    background-color: #3b82f6;
+    color: #ffffff;
+}
+
+QPushButton#btn_save_cust:hover, QPushButton#btn_modify_cust:hover, QPushButton#btn_clear:hover {
+    background-color: #5491DB;
+}
+
+QPushButton#btn_save_cust:pressed, QPushButton#btn_modify_cust:pressed, QPushButton#btn_clear:pressed {
+    background-color: #1e40af;
+}
+
+/*Delete Button*/
+QPushButton#btn_del_cust {
+    background-color: #ed0048;
+    color: #ffffff;
+}
+
+QPushButton#btn_del_cust:hover {
+    background-color: #ff2056;
+}
+
+QPushButton#btn_del_cust:pressed {
+    background-color: #b72340;
+}
+
+
+
+
+
+
+
+
+/* Checkboxes */
+QCheckBox {
+    color: #e5e7eb;
+    spacing: 8px;
+    padding: 4px;
+}
+
+QCheckBox::indicator {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 2px solid #4b5563;
+    background-color: #374151;
+}
+
+QCheckBox::indicator:hover {
+    border: 2px solid #6b7280;
+}
+
+QCheckBox::indicator:checked {
+    background-color: #3b82f6;
+    border: 2px solid #2563eb;
+}
+
+
+
+
+
+
+
+
+/* Table Widget */
+QTabWidget {
+    background-color: #1f2937;
+    alternate-background-color: #111827;
+    color: #f3f4f6;
+    gridline-color: #374151;
+    border: 1px solid #374151;
+    border-radius: 6px;
+    selection-background-color: #1e3a8a;
+    selection-color: #ffffff;
+}
+
+QTableWidget::item:selected, QTableView::item:selected {
+    background-color: #1e3a8a;
+    color: #ffffff;
+}
+
+QTableWidget::item:hover, QTableView::item:hover {
+    background-color: #1e3a8a;
+}
+
+/* Table Header */
+QHeaderView::section {
+    background-color: #374151;
+    color: #e5e7eb;
+    padding: 10px 8px;
+    border: none;
+    border-bottom: 1px solid #4b5563;
+    font-weight: 600;
+}
+
+QHeaderView::section:hover {
+    background-color: #4b5563;
+}
+
+
+/* Scrollbar - Vertical */
+QScrollBar:vertical {
+    background-color: #e5e7eb;
+    width: 14px;
+    border-radius: 7px;
+    margin: 0px;
+}
+
+QScrollBar::handle:vertical {
+    background-color: #3b82f6;
+    border-radius: 6px;
+    border: 2px solid #e5e7eb;
+    min-height: 20px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: #2563eb;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    height: 0px;
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background-color: #d1d5db;
+    border-radius: 5px;
+}
+
+
+
+/* Dialog */
+QDialog {
+    background-color: #1f2937;
+    color: #f3f4f6;
+}
+
+
+/* Calendar Widget */
+QCalendarWidget {
+    background-color: #1f2937;
+    color: #f3f4f6;
+}
+
+QCalendarWidget QToolButton {
+    background-color: #374151;
+    color: #f3f4f6;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+QCalendarWidget QToolButton:hover {
+    background-color: #4b5563;
+}
+
+QCalendarWidget {
+    background-color: #1f2937;
+    selection-background-color: #3b82f6;
+    selection-color: #ffffff;
+}
+
+
+
+
+/*Radio Buttons*/
+QRadioButton {
+    color: #e5e7eb;
+    spacing: 8px;
+    padding: 4px;
+}
+
+QRadioButton::indicator {
+    width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    border: 2px solid #4b5563;
+    background-color: #374151;
+}
+
+QRadioButton::indicator:hover {
+    border: 2px solid #6b7280;
+}
+
+QRadioButton::indicator:checked {
+    background-color: #3b82f6;
+    border: 2px solid #2563eb;
+}

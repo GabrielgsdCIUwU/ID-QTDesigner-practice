@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>dlgCalendar</class>
+ <widget class="QDialog" name="dlgCalendar">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>414</width>
+    <height>309</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Calendar</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>C:/Users/a24gabrielsd/Documents/GitHub/Clases/2fps/diseño interfaces/pycharm/proyectos/SuarezDominguez/img/calendar.png</normaloff>C:/Users/a24gabrielsd/Documents/GitHub/Clases/2fps/diseño interfaces/pycharm/proyectos/SuarezDominguez/img/calendar.png</iconset>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <widget class="QCalendarWidget" name="Calendar">
+     <property name="gridVisible">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
