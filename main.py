@@ -9,6 +9,7 @@ from customers import Customers
 import styles
 import  sys
 from ThemeManager import ThemeManager
+from reports import *
 
 class Main(QtWidgets.QMainWindow):
     def __init__(self):
@@ -46,6 +47,7 @@ class Main(QtWidgets.QMainWindow):
         globals.ui.dlg_about.triggered.connect(Events.messageAbout)
         globals.ui.actionSettings.triggered.connect(Events.settingsWindow)
         globals.ui.actionExportCustomers.triggered.connect(Events.exportCustomersToCsv)
+        globals.ui.actionCustomerReport.triggered.connect(Reports.reportCustomers)
 
         #Tools
         globals.ui.actionBackup.triggered.connect(Events.saveBackup)
@@ -79,6 +81,12 @@ class Main(QtWidgets.QMainWindow):
 
         #Show status bar
         Events.showStatusBar()
+
+
+
+        # How to load a combo box from array
+        # options = ["4%", "12%", "21%"]
+        # globals.ui.cb_iva.addItems(options)
 
 
     @staticmethod

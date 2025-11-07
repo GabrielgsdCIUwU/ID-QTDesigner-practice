@@ -266,7 +266,7 @@ class Events:
         try:
             today = datetime.datetime.now().strftime("%d/%m/%Y")
             label_status = QtWidgets.QLabel()
-            label_status.setText("Date:" + today + " - " + "Versión 0.0.1")
+            label_status.setText("Date: " + today + " - " + "Versión 0.0.1")
             label_status.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             globals.ui.statusbar.addPermanentWidget(label_status, 1)
         except Exception as e:

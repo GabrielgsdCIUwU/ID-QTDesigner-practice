@@ -22,7 +22,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="pan_main">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_customer">
        <attribute name="title">
@@ -206,7 +206,7 @@
               <property name="minimumSize">
                <size>
                 <width>100</width>
-                <height>25</height>
+                <height>35</height>
                </size>
               </property>
               <property name="font">
@@ -596,10 +596,20 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_2">
+      <widget class="QWidget" name="Sales">
        <attribute name="title">
-        <string>Tab 2</string>
+        <string>Sales</string>
        </attribute>
+       <widget class="QComboBox" name="cb_iva">
+        <property name="geometry">
+         <rect>
+          <x>520</x>
+          <y>220</y>
+          <width>69</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab">
        <attribute name="title">
