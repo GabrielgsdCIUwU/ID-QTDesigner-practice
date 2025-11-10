@@ -56,7 +56,7 @@ class Customers:
 
     @staticmethod
     def checkMobil(numero):
-        patron = r'^[67]\d{9}$'
+        patron = r'^[67]\d{8}$'
         if re.match(patron, numero):
             globals.ui.le_email.setStyleSheet('background-color: rgb(255, 255, 220); color: black;')
         else:
@@ -205,6 +205,7 @@ class Customers:
             mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
             mbox.setText("An error has occurred while saving the customer")
             mbox.exec()
+            Customers.setTableData(True)
         except Exception as error:
             print("error en saveCustomer ", error)
 
