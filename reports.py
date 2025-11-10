@@ -1,5 +1,6 @@
 import datetime
 
+from PIL import Image
 from reportlab.pdfgen import canvas
 import os
 
@@ -16,7 +17,8 @@ class Reports:
     def reportCustomers():
         print("Report Customers")
         try:
-            date = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            titleForCanvas = "Customers"
+            date = "" #datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
             root_path = ".\\data\\reports\\"
             report_name = f"{date}_customers.pdf"
 
@@ -25,14 +27,13 @@ class Reports:
             pdf_path = os.path.join(root_path, report_name)
             customer_canvas = canvas.Canvas(pdf_path)
 
-            for i in range(len(Reports.columns_data)):
-                x, y = Reports.coords_columns[i]
-                customer_canvas.drawString(x, y, str(Reports.columns_data[i]))
+            Reports.topHeaderReport(customer_canvas, titleForCanvas)
 
-            customer_canvas.line(35, 645, 525, 645)
+            Reports.displayColumnDataHeaders(customer_canvas)
+
+            Reports.footer(customer_canvas, titleForCanvas)
 
             Reports._displayCustomersData(customer_canvas, all_customers_data)
-
 
             customer_canvas.save()
 
@@ -48,10 +49,18 @@ class Reports:
         y = 630
         for customer in all_customers_data:
             if y <= 90:
-                print("dentro")
+                y = 630
+                #Construir la siguiente pagina
+                title = "Customers"
+
                 customer_canvas.setFont("Helvetica-Oblique", 8)
                 customer_canvas.drawString(450, 75, "Página siguiente...")
                 customer_canvas.showPage()
+
+                Reports.displayColumnDataHeaders(customer_canvas)
+
+                Reports.footer(customer_canvas, title)
+                Reports.topHeaderReport(customer_canvas, title)
 
                 customer_canvas.setFont("Helvetica", 10)
 
@@ -62,11 +71,11 @@ class Reports:
             # Data from customers to display
             dni = "****" + str(customer[0][4:7] + "****")
             customer_canvas.drawString(x - 7, y, dni)
-            customer_canvas.drawString(x + 50, y, str(customer[2]))
-            customer_canvas.drawString(x + 130, y, str(customer[3]))
-            customer_canvas.drawString(x + 190, y, str(customer[5]))
-            customer_canvas.drawString(x + 270, y, str(customer[8]))
-            customer_canvas.drawString(x + 350, y, str(customer[9]))
+            customer_canvas.drawString(x + 50, y, Reports.displayMaxDataLengthFromCustomer(str(customer[2])))
+            customer_canvas.drawString(x + 130, y, Reports.displayMaxDataLengthFromCustomer(str(customer[3])))
+            customer_canvas.drawString(x + 190, y, Reports.displayMaxDataLengthFromCustomer(str(customer[5])))
+            customer_canvas.drawString(x + 270, y, Reports.displayMaxDataLengthFromCustomer(str(customer[8])))
+            customer_canvas.drawString(x + 350, y, Reports.displayMaxDataLengthFromCustomer(str(customer[9])))
             customer_canvas.drawString(x + 430, y, Reports._displayHumanReadHistorical(customer[10]))
 
             y -= 25
@@ -79,11 +88,78 @@ class Reports:
             return "Inactive"
 
     @staticmethod
-    def footer(customer_canvas):
+    def footer(customer_canvas, title):
         try:
             customer_canvas.line(35, 50, 525, 50)
-            today = datetime.date.today()
+            today = datetime.datetime.today()
             displayToday = today.strftime("%d/%m/%Y %H:%M:%S")
             customer_canvas.setFont("Helvetica", 7)
+            customer_canvas.drawString(45, 40, displayToday)
+            customer_canvas.drawString(250,40, title)
+            customer_canvas.drawString(450, 40, "Page: " + str(customer_canvas.getPageNumber()))
         except Exception as e:
             print(f"Error en Reports footer: {e}" )
+
+    @staticmethod
+    def topHeaderReport(canvas, title):
+        try:
+            logo_path = ".\\img\\gabrielgsd.jpg"
+            logo = Image.open(logo_path)
+
+            if not isinstance(logo, Image.Image):
+                print("Error en logo: " + str(logo_path))
+                return
+
+            Reports.displayBusinessData(canvas)
+
+            # Draw square for business Data
+            canvas.line(20, 800, 120, 800)
+            canvas.line(20, 700, 120, 700)
+
+            canvas.line(20, 700, 20, 800)
+            canvas.line(120, 700, 120, 800)
+
+            canvas.setFont("Helvetica", 10)
+            canvas.drawCentredString(55, 785, "Empresa Teis")
+            canvas.drawCentredString(300, 675, title)
+            canvas.line(35, 665, 525, 665)
+            canvas.drawImage(logo_path, 480, 745, width=40, height=40)
+
+        except Exception as e:
+            print(f"Error en Reports top header: {e}" )
+
+    @staticmethod
+    def displayBusinessData(canvas):
+        try:
+            canvas.setFont("Helvetica", 9)
+            x = 25
+            canvas.drawString(x, 755, "CIF: A12345678")
+            canvas.drawString(x, 745, "Avda. de Galicia, 101")
+            canvas.drawString(x, 735, "Vigo - 36215- España")
+            canvas.drawString(x, 725, "Tlfo: 986123456")
+            canvas.drawString(x, 715, "email: teis@mail.com")
+
+        except Exception as e:
+            print(f"Error en displayBusinessData: {e}" )
+
+
+    @staticmethod
+    def displayColumnDataHeaders(canvas):
+        canvas.setFont("Helvetica", 10)
+        for i in range(len(Reports.columns_data)):
+            x, y = Reports.coords_columns[i]
+            canvas.drawString(x, y, str(Reports.columns_data[i]))
+
+        canvas.line(35, 645, 525, 645)
+
+    @staticmethod
+    def displayMaxDataLengthFromCustomer(customer_data):
+        try:
+            MAX_LENGTH = 15
+            if len(customer_data) > MAX_LENGTH:
+                return customer_data[:MAX_LENGTH] + "..."
+
+            return customer_data
+
+        except Exception as e:
+            print(f"Error en displayMaxDataLengthFromCustomer: {e}" )
