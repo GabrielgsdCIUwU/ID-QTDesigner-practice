@@ -18,7 +18,7 @@ class Reports:
         print("Report Customers")
         try:
             titleForCanvas = "Customers"
-            date = "" #datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            date = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
             root_path = ".\\data\\reports\\"
             report_name = f"{date}_customers.pdf"
 

@@ -207,3 +207,98 @@ class Connection:
             return all_settings
         except Exception as error:
             print("Error getSettings: ", error)
+
+
+
+    # products section
+    @staticmethod
+    def getProducts():
+        historical_query = "SELECT * FROM products;"
+
+
+        all_products = []
+        query = QtSql.QSqlQuery()
+        query.prepare(historical_query)
+        if query.exec():
+            while query.next():
+                row = [query.value(i) for i in range(query.record().count())]
+                all_products.append(row)
+        return all_products
+
+    @staticmethod
+    def addProduct(data):
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("INSERT INTO products (name, stock, family, unit_price, currency) VALUES (:name, :stock, :family, :unit_price, :currency)")
+
+            order_values = [":name", ":stock", ":family", ":unit_price", ":currency"]
+
+            for i in range(len(order_values)):
+                try:
+                    value_text = str(data[i].text())
+                except AttributeError:
+                    value_text = str(data[i].currentText())
+                query.bindValue(order_values[i], value_text)
+
+            if not query.exec():
+                return False
+
+            return True
+
+        except Exception as error:
+            print("Error addProduct: ", error)
+
+    @staticmethod
+    def getProductData(product_name):
+        try:
+            all_product_data = []
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT * FROM products WHERE name = :name")
+            query.bindValue(":name", product_name)
+            if query.exec():
+                while query.next():
+                    for i in range(query.record().count()):
+                        all_product_data.append((query.value(i)))
+
+            return all_product_data
+        except Exception as error:
+            print("Error getProductData: ", error)
+
+    @staticmethod
+    def deleteProduct(product_name):
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("DELETE FROM products WHERE name = :name")
+            query.bindValue(":name", str(product_name))
+
+            if not query.exec():
+                return False
+
+            return True
+        except Exception as error:
+            print("Error deleteProduct: ", error)
+
+    @staticmethod
+    def setProductData(data):
+        print(data)
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("UPDATE products SET "
+                      "name = :name, stock = :stock, family = :family, unit_price = :unit_price, currency = :currency "
+                      "WHERE name = :name;")
+
+            order_values = [":name", ":stock", ":family", ":unit_price", ":currency"]
+
+            for i in range(len(order_values)):
+                try:
+                    value_text = str(data[i].text())
+                except AttributeError:
+                    value_text = str(data[i].currentText())
+                query.bindValue(order_values[i], value_text)
+
+            if not query.exec():
+                return False
+
+            return True
+        except Exception as error:
+            print("Error setCustomerData: ", error)

@@ -6,6 +6,7 @@ import globals
 from venAux import Calendar, About, FileDialog, Settings
 from window import *
 from customers import Customers
+from products import Products
 import styles
 import  sys
 from ThemeManager import ThemeManager
@@ -40,7 +41,9 @@ class Main(QtWidgets.QMainWindow):
     def connect_signals_slot():
         #conexion DB
         Customers.setTableData()
+        Products.setTableData()
         Events.resizeCustomerTable()
+        Events.resizeProductTable()
 
         #File
         globals.ui.actionExit.triggered.connect(Events.messageExit)
@@ -60,6 +63,12 @@ class Main(QtWidgets.QMainWindow):
         globals.ui.le_email.editingFinished.connect(lambda: Customers.checkMail(globals.ui.le_email.text()))
         globals.ui.le_phone.editingFinished.connect(lambda: Customers.checkMobil(globals.ui.le_phone.text()))
 
+        #Products
+        globals.ui.le_name_product.editingFinished.connect(
+            lambda: Customers.capitalizar(globals.ui.le_name_product.text(), globals.ui.le_name_product))
+        globals.ui.le_unit_price.editingFinished.connect(Products.checkUnitPrice)
+
+
         #Functions Buttons
         globals.ui.btn_calendar.clicked.connect(Events.openCalendar)
         globals.ui.btn_del_cust.clicked.connect(Customers.deleteCustomer)
@@ -68,12 +77,21 @@ class Main(QtWidgets.QMainWindow):
         globals.ui.btn_modify_cust.clicked.connect(Customers.modifyCustomer)
         globals.ui.btn_search.clicked.connect(Customers.getCustomerById)
 
+        #Functions Buttons in Sales
+        globals.ui.btn_save_product.clicked.connect(Products.saveProduct)
+        globals.ui.btn_clear_product.clicked.connect(Products.clearData)
+        globals.ui.btn_delete_product.clicked.connect(Products.deleteProduct)
+        globals.ui.btn_modify_product.clicked.connect(Products.modifyProduct)
+
         #Function of tables
         globals.ui.table_customer.clicked.connect(Customers.selectCustomer)
+        globals.ui.table_product.clicked.connect(Products.selectProduct)
 
         # Function combobox
         Events.loadProvinces()
         globals.ui.cb_province.currentIndexChanged.connect(Events.loadCities)
+        Events.loadProductFamily()
+        Events.loadCurrency()
 
         # Functions of check Historical
         globals.ui.chkb_hystorical.setChecked(True)

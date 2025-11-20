@@ -67,7 +67,7 @@ QLabel {
     padding-top: 7px;
 }
 
-#lbl_list_cust {
+#lbl_list_cust, #lbl_list_products {
     font-size: 28px;
     font-weight: bold;
 }
@@ -153,30 +153,33 @@ QPushButton:disabled {
 }
 
 /*Save and Modify buttons*/
-QPushButton#btn_save_cust, QPushButton#btn_modify_cust, QPushButton#btn_clear {
+QPushButton#btn_save_cust, QPushButton#btn_modify_cust, QPushButton#btn_clear, QPushButton#btn_save_product,
+QPushButton#btn_modify_product, QPushButton#btn_clear_product{
     background-color: #3b82f6;
     color: #ffffff;
 }
 
-QPushButton#btn_save_cust:hover, QPushButton#btn_modify_cust:hover, QPushButton#btn_clear:hover {
+QPushButton#btn_save_cust:hover, QPushButton#btn_modify_cust:hover, QPushButton#btn_clear:hover, QPushButton#btn_save_product:hover,
+QPushButton#btn_modify_product:hover, QPushButton#btn_clear_product:hover{
     background-color: #5491DB;
 }
 
-QPushButton#btn_save_cust:pressed, QPushButton#btn_modify_cust:pressed, QPushButton#btn_clear:pressed {
+QPushButton#btn_save_cust:pressed, QPushButton#btn_modify_cust:pressed, QPushButton#btn_clear:pressed, QPushButton#btn_save_product:pressed,
+QPushButton#btn_modify_product:pressed, QPushButton#btn_clear_product:pressed {
     background-color: #1e40af;
 }
 
 /*Delete Button*/
-QPushButton#btn_del_cust {
+QPushButton#btn_del_cust, QPushButton#btn_delete_product {
     background-color: #ed0048;
     color: #ffffff;
 }
 
-QPushButton#btn_del_cust:hover {
+QPushButton#btn_del_cust:hover, QPushButton#btn_delete_product:hover {
     background-color: #ff2056;
 }
 
-QPushButton#btn_del_cust:pressed {
+QPushButton#btn_del_cust:pressed,QPushButton#btn_delete_product:pressed {
     background-color: #b72340;
 }
 

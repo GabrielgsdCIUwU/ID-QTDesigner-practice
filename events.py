@@ -74,6 +74,24 @@ class Events:
         except Exception as e:
             print("Error loading cities: ", e)
 
+    @staticmethod
+    def loadProductFamily():
+        try:
+            globals.ui.cb_family.clear()
+            all_product_family = ["Foods", "Furniture", "Clothes", "Electronic"]
+            globals.ui.cb_family.addItems(all_product_family)
+        except Exception as e:
+            print("Error loading product family: ", e)
+
+    @staticmethod
+    def loadCurrency():
+        try:
+            globals.ui.cb_currency.clear()
+            all_currency = ["€", "$"]
+            globals.ui.cb_currency.addItems(all_currency)
+        except Exception as e:
+            print("Error loading currency: ", e)
+
 
     @staticmethod
     def loadSettings():
@@ -99,6 +117,23 @@ class Events:
                 header_items.setFont(font)
         except Exception as e:
             print("Error resize customer table: ", e)
+
+    @staticmethod
+    def resizeProductTable():
+        try:
+            header = globals.ui.table_product.horizontalHeader()
+            for i in range(header.count()):
+                if i == 3:
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+                else:
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Stretch)
+                header_items = globals.ui.table_product.horizontalHeaderItem(i)
+                # negrita cabecera
+                font = header_items.font()
+                font.setBold(True)
+                header_items.setFont(font)
+        except Exception as e:
+            print("Error resize product table: ", e)
 
     @staticmethod
     def messageAbout():
