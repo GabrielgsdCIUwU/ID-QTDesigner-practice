@@ -7,6 +7,7 @@ from venAux import Calendar, About, FileDialog, Settings
 from window import *
 from customers import Customers
 from products import Products
+from invoice import Invoice
 import styles
 import  sys
 from ThemeManager import ThemeManager
@@ -37,13 +38,17 @@ class Main(QtWidgets.QMainWindow):
         globals.theme_manager.register(globals.about)
         globals.theme_manager.register(globals.vencal)
 
+        Invoice.initDataBoxes()
+
     @staticmethod
     def connect_signals_slot():
         #conexion DB
         Customers.setTableData()
         Products.setTableData()
+        Invoice.setTableFacturaData()
         Events.resizeCustomerTable()
         Events.resizeProductTable()
+        Events.resizeSalesTable()
 
         #File
         globals.ui.actionExit.triggered.connect(Events.messageExit)
@@ -83,9 +88,22 @@ class Main(QtWidgets.QMainWindow):
         globals.ui.btn_delete_product.clicked.connect(Products.deleteProduct)
         globals.ui.btn_modify_product.clicked.connect(Products.modifyProduct)
 
+        #Fuctions Buttons in Invoice
+        globals.ui.btn_save_invoice.clicked.connect(Invoice.saveInvoice)
+        globals.ui.btn_clear_invoice.clicked.connect(Invoice.clearData)
+        globals.ui.le_dni_invoice.editingFinished.connect(Invoice.searchInvoiceCustomer)
+        globals.ui.btn_save_sale.clicked.connect(Invoice.saveSales)
+
+        #Other functions in Invoice
+        globals.ui.le_dni_invoice.setText("00000000T")
+        Invoice.searchInvoiceCustomer()
+        Invoice.activeSales()
+        globals.ui.table_sales.itemChanged.connect(Invoice.cellChangedSales)
+
         #Function of tables
         globals.ui.table_customer.clicked.connect(Customers.selectCustomer)
         globals.ui.table_product.clicked.connect(Products.selectProduct)
+        globals.ui.table_invoice.clicked.connect(Invoice.selectInvoice)
 
         # Function combobox
         Events.loadProvinces()

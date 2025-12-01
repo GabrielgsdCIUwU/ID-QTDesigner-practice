@@ -249,12 +249,18 @@ class Connection:
             print("Error addProduct: ", error)
 
     @staticmethod
-    def getProductData(product_name):
+    def getProductData(product, search_type ="name"):
         try:
             all_product_data = []
             query = QtSql.QSqlQuery()
-            query.prepare("SELECT * FROM products WHERE name = :name")
-            query.bindValue(":name", product_name)
+
+            if search_type == "name":
+                query.prepare("SELECT * FROM products WHERE name = :name")
+                query.bindValue(":name", product)
+            elif search_type == "id":
+                query.prepare("SELECT * FROM products WHERE code = :id")
+                query.bindValue(":id", product)
+
             if query.exec():
                 while query.next():
                     for i in range(query.record().count()):
@@ -302,3 +308,71 @@ class Connection:
             return True
         except Exception as error:
             print("Error setCustomerData: ", error)
+
+
+    # Invoice section
+    @staticmethod
+    def addInvoice(data):
+        # ! DATA FORMAT IS ["String", "String"...] NOT [globals.ui...]
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("INSERT INTO invoices (idFac, date) VALUES (:dni, :date)")
+
+            order_values = [":dni", ":date"]
+
+            for i in range(len(order_values)):
+                query.bindValue(order_values[i], str(data[i]))
+
+            if not query.exec():
+                return False
+
+            return True
+
+        except Exception as error:
+            print("Error addInvoice: ", error)
+
+    @staticmethod
+    def getAllInvoices():
+        try:
+            all_data_invoices = []
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT * FROM invoices order by idFac desc;")
+
+            if query.exec():
+                while query.next():
+                    row = [query.value(i) for i in range(query.record().count())]
+                    all_data_invoices.append(row)
+
+            print(all_data_invoices)
+            return all_data_invoices
+
+        except Exception as error:
+            print("Error getAllInvoices: ", error)
+
+
+
+    @staticmethod
+    def addSale(data):
+        """
+        Adding sale to the database
+        :param data: Values order: idFactura, idProduct, Amount, Product, UnitPrice
+        :return: bool
+        """
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("INSERT INTO sales (idFactura, idProducto, amount, product, unitprice, total)"
+                          "values (:idFactura, :idProduct, :amount, :product, :unitprice, :total)"
+                          )
+
+            order_values = [":idFactura", ":idProduct", ":amount", ":product", ":unitprice"]
+
+            for i in range(len(order_values)):
+                query.bindValue(order_values[i], str(data[i]))
+
+            if not query.exec():
+                return False
+
+            return True
+
+        except Exception as error:
+            print("Error addSale: ", error)

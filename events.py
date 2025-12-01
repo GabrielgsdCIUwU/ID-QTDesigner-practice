@@ -136,6 +136,25 @@ class Events:
             print("Error resize product table: ", e)
 
     @staticmethod
+    def resizeSalesTable():
+        try:
+            header = globals.ui.table_sales.horizontalHeader()
+            for i in range(header.count()):
+                if i == 3:
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+                else:
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Stretch)
+                header_items = globals.ui.table_sales.horizontalHeaderItem(i)
+                # negrita cabecera
+                font = header_items.font()
+                font.setBold(True)
+                header_items.setFont(font)
+
+            globals.ui.table_sales.setRowCount(1)
+        except Exception as e:
+            print("Error resize product table: ", e)
+
+    @staticmethod
     def messageAbout():
         try:
             globals.about.show()
