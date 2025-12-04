@@ -84,7 +84,6 @@ class Products:
             row_selected = globals.ui.table_product.selectedItems()
             name_product_selected = row_selected[0].text()
             all_product_data = Connection.getProductData(str(name_product_selected))
-            print(all_product_data)
 
             all_data_boxes = [globals.ui.le_name_product, globals.ui.le_stock, globals.ui.cb_family, globals.ui.le_unit_price, globals.ui.cb_currency]
 

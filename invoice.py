@@ -102,6 +102,7 @@ class Invoice:
             for box in Invoice._all_data_boxes:
                 box.clear()
 
+            globals.ui.table_sales.clearContents()
 
         except Exception as e:
             print(f"Error en clearData: {e}")
@@ -110,26 +111,34 @@ class Invoice:
     def activeSales(create_new_row=False):
         try:
             sales_table = globals.ui.table_sales
-            row_index = sales_table.rowCount()
-
+            current_count = sales_table.rowCount()
+            globals.ui.table_sales.blockSignals(True)
             if create_new_row:
-                sales_table.setRowCount(row_index + 1)
-                row_index = row_index
+                sales_table.setRowCount(current_count + 1)
+                target_row = current_count
+            else:
+                if current_count == 0:
+                    sales_table.setRowCount(1)
+                    target_row = 0
+                else:
+                    target_row = current_count - 1
 
             item0 = QtWidgets.QTableWidgetItem("")
             item0.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-            sales_table.setItem(row_index, 0, item0)
+            sales_table.setItem(target_row, 0, item0)
 
-            sales_table.setItem(row_index, 1, QtWidgets.QTableWidgetItem(""))
-            sales_table.setItem(row_index, 2, QtWidgets.QTableWidgetItem(""))
+            sales_table.setItem(target_row, 1, QtWidgets.QTableWidgetItem(""))
+            sales_table.setItem(target_row, 2, QtWidgets.QTableWidgetItem(""))
 
             item3 = QtWidgets.QTableWidgetItem("")
             item3.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-            sales_table.setItem(row_index, 3, item3)
+            sales_table.setItem(target_row, 3, item3)
 
             item4 = QtWidgets.QTableWidgetItem("")
             item4.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
-            sales_table.setItem(row_index, 4, item4)
+            sales_table.setItem(target_row, 4, item4)
+
+            sales_table.blockSignals(False)
 
         except Exception as e:
             print(f"Error en activeSales: {e}")
@@ -225,14 +234,14 @@ class Invoice:
             print(f"Error en calculateTotals: {e}")
 
     @staticmethod
-    def setTableFacturaData(showData = False):
+    def setTableFacturaData(show_data_when_tab = False):
         try:
             all_data_invoices = Connection.getAllInvoices()
 
             table = globals.ui.table_invoice
             index = 0
             for invoice in all_data_invoices:
-                if showData and invoice == all_data_invoices[0]:
+                if show_data_when_tab and invoice == all_data_invoices[0]:
                     globals.ui.lbl_num_factura.setText(invoice[0])
                     globals.ui.lbl_date_factura.setText(invoice[2])
 
@@ -263,6 +272,15 @@ class Invoice:
             globals.ui.le_dni_invoice.setText(data[1])
             globals.ui.lbl_date_factura.setText(data[2])
             Invoice.searchInvoiceCustomer()
+
+
+            if not Connection.getSale(data[0]):
+                globals.ui.table_sales.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.AllEditTriggers)
+            else:
+                globals.ui.table_sales.blockSignals(True)
+                globals.ui.table_sales.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
+
+            Invoice.setTableSalesData(data[0])
 
         except Exception as e:
             print(f"Error en selectInvoice: {e}")
@@ -295,7 +313,15 @@ class Invoice:
                 amount = table.item(r, 3).text().strip()
                 total_item = table.item(r, 4).text().strip()
 
-                if not Connection.addSale([id_factura, id_product, product_name, int(amount), float(unit_price), float(total_item)]):
+                if not id_factura or not id_product or not product_name or not unit_price or not amount or not total_item:
+                    mbox = QtWidgets.QMessageBox()
+                    mbox.setWindowTitle("Error")
+                    mbox.setText("All data fields are required")
+                    mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+                    mbox.exec()
+                    return
+
+                if not Connection.addSale([id_factura, id_product, amount, product_name, unit_price, total_item]):
                     mbox = QtWidgets.QMessageBox()
                     mbox.setWindowTitle("Error")
                     mbox.setText("Error saving the sales")
@@ -303,10 +329,67 @@ class Invoice:
                     mbox.exec()
                     return
 
-            print("imprimiendo factura")
+
+                mbox = QtWidgets.QMessageBox()
+                mbox.setWindowTitle("Success")
+                mbox.setText("Successfully saved the sales")
+                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.exec()
 
         except Exception as e:
             print(f"Error en saveSales: {e}")
+
+    @staticmethod
+    def setTableSalesData(id_factura):
+        try:
+            ui_table = globals.ui.table_sales
+
+            ui_table.blockSignals(True)
+
+
+            ui_table.clearContents()
+            ui_table.setRowCount(0)
+
+            all_sales = Connection.getSale(id_factura)
+
+            if not all_sales:
+                Invoice.activeSales(create_new_row=False)
+                Invoice.calculateTotals()
+                ui_table.blockSignals(False)
+                return
+
+            ui_table.setRowCount(len(all_sales))
+            for index, sale in enumerate(all_sales):
+
+                # ID Producto
+                ui_table.setItem(index, 0, QtWidgets.QTableWidgetItem(str(sale[2])))
+                # Nombre Producto
+                ui_table.setItem(index, 1, QtWidgets.QTableWidgetItem(str(sale[3])))
+                # Precio Unitario
+                ui_table.setItem(index, 2, QtWidgets.QTableWidgetItem(str(sale[4])))
+                # Cantidad
+                ui_table.setItem(index, 3, QtWidgets.QTableWidgetItem(str(sale[5])))
+                # Total Línea
+                ui_table.setItem(index, 4, QtWidgets.QTableWidgetItem(str(sale[6])))
+
+                item_align_center = QtCore.Qt.AlignmentFlag.AlignCenter | QtCore.Qt.AlignmentFlag.AlignVCenter
+                item_align_left = QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter
+
+                if ui_table.item(index, 0):
+                    ui_table.item(index, 0).setTextAlignment(item_align_center)
+                if ui_table.item(index, 1):
+                    ui_table.item(index, 1).setTextAlignment(item_align_left)
+                if ui_table.item(index, 2):
+                    ui_table.item(index, 2).setTextAlignment(item_align_center)
+                if ui_table.item(index, 3):
+                    ui_table.item(index, 3).setTextAlignment(item_align_center)
+                if ui_table.item(index, 4):
+                    ui_table.item(index, 4).setTextAlignment(item_align_center)
+
+            Invoice.calculateTotals()
+            ui_table.blockSignals(False)
+        except Exception as e:
+            print("error en cargar setTableSalesData", e)
 
 
 

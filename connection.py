@@ -286,7 +286,6 @@ class Connection:
 
     @staticmethod
     def setProductData(data):
-        print(data)
         try:
             query = QtSql.QSqlQuery()
             query.prepare("UPDATE products SET "
@@ -355,7 +354,7 @@ class Connection:
     def addSale(data):
         """
         Adding sale to the database
-        :param data: Values order: idFactura, idProduct, Amount, Product, UnitPrice
+        :param data: Values order: idFactura, idProduct, Amount, Product, UnitPrice, Total
         :return: bool
         """
         try:
@@ -364,7 +363,7 @@ class Connection:
                           "values (:idFactura, :idProduct, :amount, :product, :unitprice, :total)"
                           )
 
-            order_values = [":idFactura", ":idProduct", ":amount", ":product", ":unitprice"]
+            order_values = [":idFactura", ":idProduct", ":amount", ":product", ":unitprice", ":total"]
 
             for i in range(len(order_values)):
                 query.bindValue(order_values[i], str(data[i]))
@@ -376,3 +375,24 @@ class Connection:
 
         except Exception as error:
             print("Error addSale: ", error)
+
+
+    @staticmethod
+    def getSale(id_factura):
+        try:
+            all_data_sales = []
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT * FROM sales where idFactura = :idFactura;")
+
+            query.bindValue(":idFactura", int(id_factura))
+
+            if query.exec():
+                while query.next():
+                    row = [query.value(i) for i in range(query.record().count())]
+                    all_data_sales.append(row)
+
+            print(all_data_sales)
+            return all_data_sales
+
+        except Exception as error:
+            print("Error getSale: ", error)

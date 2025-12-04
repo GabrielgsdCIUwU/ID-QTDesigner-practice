@@ -31,6 +31,7 @@ class Main(QtWidgets.QMainWindow):
 
 
         self.connect_signals_slot()
+        self.connect_keyboard_signals()
 
         globals.theme_manager = ThemeManager()
         globals.theme_manager.register(self)
@@ -123,6 +124,13 @@ class Main(QtWidgets.QMainWindow):
         # How to load a combo box from array
         # options = ["4%", "12%", "21%"]
         # globals.ui.cb_iva.addItems(options)
+
+
+    def connect_keyboard_signals(self):
+        #Invoice
+        self.shortcutCleanInvoice = QtGui.QShortcut(QtGui.QKeySequence("F11"), self)
+        self.shortcutCleanInvoice.activated.connect(Invoice.clearData)
+
 
 
     @staticmethod
