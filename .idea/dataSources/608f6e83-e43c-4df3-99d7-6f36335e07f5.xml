@@ -499,7 +499,7 @@
     </routine>
     <schema id="191" parent="1" name="main">
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2025-12-01.08:25:19</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2025-12-11.09:08:48</LastIntrospectionLocalTimestamp>
     </schema>
     <argument id="192" parent="16">
       <ArgumentDirection>R</ArgumentDirection>
@@ -1659,6 +1659,8 @@
       <UnderlyingIndexName>sqlite_autoindex_customers_1</UnderlyingIndexName>
     </key>
     <column id="577" parent="556" name="idFac">
+      <AutoIncrement>1</AutoIncrement>
+      <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
@@ -1670,153 +1672,157 @@
       <Position>3</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="580" parent="557" name="idprov">
+    <key id="580" parent="556">
+      <ColNames>idFac</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="581" parent="557" name="idprov">
       <Position>1</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="581" parent="557" name="municipio">
+    <column id="582" parent="557" name="municipio">
       <Position>2</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="582" parent="557" name="idmuni">
+    <column id="583" parent="557" name="idmuni">
       <Position>3</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="583" parent="558" name="code">
+    <column id="584" parent="558" name="code">
       <AutoIncrement>1</AutoIncrement>
       <Position>1</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="584" parent="558" name="name">
+    <column id="585" parent="558" name="name">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="585" parent="558" name="stock">
+    <column id="586" parent="558" name="stock">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="586" parent="558" name="family">
+    <column id="587" parent="558" name="family">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="587" parent="558" name="unit_price">
+    <column id="588" parent="558" name="unit_price">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>REAL|0s</StoredType>
     </column>
-    <column id="588" parent="558" name="currency">
+    <column id="589" parent="558" name="currency">
       <DefaultExpression>&apos;€&apos;</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <index id="589" parent="558" name="sqlite_autoindex_products_1">
+    <index id="590" parent="558" name="sqlite_autoindex_products_1">
       <ColNames>name</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="590" parent="558">
+    <key id="591" parent="558">
       <ColNames>code</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="591" parent="558">
+    <key id="592" parent="558">
       <ColNames>name</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_products_1</UnderlyingIndexName>
     </key>
-    <column id="592" parent="559" name="idprov">
+    <column id="593" parent="559" name="idprov">
       <Position>1</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="593" parent="559" name="provincia">
+    <column id="594" parent="559" name="provincia">
       <Position>2</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="594" parent="560" name="id">
+    <column id="595" parent="560" name="id">
       <AutoIncrement>1</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="595" parent="560" name="idFactura">
+    <column id="596" parent="560" name="idFactura">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="596" parent="560" name="idProducto">
+    <column id="597" parent="560" name="idProducto">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="597" parent="560" name="amount">
+    <column id="598" parent="560" name="amount">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="598" parent="560" name="product">
+    <column id="599" parent="560" name="product">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="599" parent="560" name="unitprice">
+    <column id="600" parent="560" name="unitprice">
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>NUMERIC|0s</StoredType>
     </column>
-    <column id="600" parent="560" name="total">
+    <column id="601" parent="560" name="total">
       <NotNull>1</NotNull>
       <Position>7</Position>
       <StoredType>REAL|0s</StoredType>
     </column>
-    <key id="601" parent="560">
+    <key id="602" parent="560">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="602" parent="561" name="id">
+    <column id="603" parent="561" name="id">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>varchar(10)|0s</StoredType>
     </column>
-    <column id="603" parent="561" name="value">
+    <column id="604" parent="561" name="value">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar(20)|0s</StoredType>
     </column>
-    <index id="604" parent="561" name="sqlite_autoindex_settings_1">
+    <index id="605" parent="561" name="sqlite_autoindex_settings_1">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="605" parent="561">
+    <key id="606" parent="561">
       <ColNames>id</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_settings_1</UnderlyingIndexName>
     </key>
-    <column id="606" parent="562" name="type">
+    <column id="607" parent="562" name="type">
       <Position>1</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="607" parent="562" name="name">
+    <column id="608" parent="562" name="name">
       <Position>2</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="608" parent="562" name="tbl_name">
+    <column id="609" parent="562" name="tbl_name">
       <Position>3</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="609" parent="562" name="rootpage">
+    <column id="610" parent="562" name="rootpage">
       <Position>4</Position>
       <StoredType>INT|0s</StoredType>
     </column>
-    <column id="610" parent="562" name="sql">
+    <column id="611" parent="562" name="sql">
       <Position>5</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="611" parent="563" name="name">
+    <column id="612" parent="563" name="name">
       <Position>1</Position>
     </column>
-    <column id="612" parent="563" name="seq">
+    <column id="613" parent="563" name="seq">
       <Position>2</Position>
     </column>
   </database-model>

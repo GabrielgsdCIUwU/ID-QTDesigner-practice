@@ -56,7 +56,12 @@ class Main(QtWidgets.QMainWindow):
         globals.ui.dlg_about.triggered.connect(Events.messageAbout)
         globals.ui.actionSettings.triggered.connect(Events.settingsWindow)
         globals.ui.actionExportCustomers.triggered.connect(Events.exportCustomersToCsv)
+
+
+        #Reports
         globals.ui.actionCustomerReport.triggered.connect(Reports.reportCustomers)
+        globals.ui.actionProductReport.triggered.connect(Reports.reportProducts)
+        globals.ui.actionTicketReport.triggered.connect(Reports.ticket)
 
         #Tools
         globals.ui.actionBackup.triggered.connect(Events.saveBackup)
@@ -94,6 +99,7 @@ class Main(QtWidgets.QMainWindow):
         globals.ui.btn_clear_invoice.clicked.connect(Invoice.clearData)
         globals.ui.le_dni_invoice.editingFinished.connect(Invoice.searchInvoiceCustomer)
         globals.ui.btn_save_sale.clicked.connect(Invoice.saveSales)
+        globals.ui.btn_delete_invoice.clicked.connect(Invoice.deleteInvoice)
 
         #Other functions in Invoice
         globals.ui.le_dni_invoice.setText("00000000T")

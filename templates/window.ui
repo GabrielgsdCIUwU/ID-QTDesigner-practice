@@ -219,7 +219,7 @@
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../img/glass-icon.svg</normaloff>../img/glass-icon.svg</iconset>
+                <normaloff>C:/Users/a24gabrielsd/.designer/img/glass-icon.svg</normaloff>C:/Users/a24gabrielsd/.designer/img/glass-icon.svg</iconset>
               </property>
               <property name="flat">
                <bool>true</bool>
@@ -349,7 +349,7 @@
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../img/calendar.png</normaloff>../img/calendar.png</iconset>
+                <normaloff>C:/Users/a24gabrielsd/.designer/img/calendar.png</normaloff>C:/Users/a24gabrielsd/.designer/img/calendar.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -835,6 +835,9 @@
               </property>
              </widget>
             </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="le_dni_invoice"/>
+            </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_2">
               <property name="minimumSize">
@@ -847,9 +850,6 @@
                <string>DNI Client:</string>
               </property>
              </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QLineEdit" name="le_dni_invoice"/>
             </item>
             <item row="2" column="0">
              <widget class="QLabel" name="label_3">
@@ -880,6 +880,13 @@
                <widget class="QPushButton" name="btn_save_invoice">
                 <property name="text">
                  <string>Save</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btn_delete_invoice">
+                <property name="text">
+                 <string>Delete</string>
                 </property>
                </widget>
               </item>
@@ -1023,13 +1030,13 @@
            <widget class="QLabel" name="label_4">
             <property name="minimumSize">
              <size>
-              <width>45</width>
+              <width>55</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>40</width>
+              <width>55</width>
               <height>16777215</height>
              </size>
             </property>
@@ -1076,9 +1083,15 @@
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_5">
+            <property name="minimumSize">
+             <size>
+              <width>55</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
-              <width>40</width>
+              <width>50</width>
               <height>16777215</height>
              </size>
             </property>
@@ -1127,7 +1140,7 @@
            <widget class="QLabel" name="label_8">
             <property name="maximumSize">
              <size>
-              <width>40</width>
+              <width>55</width>
               <height>16777215</height>
              </size>
             </property>
@@ -1293,6 +1306,8 @@
      <string>Reports</string>
     </property>
     <addaction name="actionCustomerReport"/>
+    <addaction name="actionProductReport"/>
+    <addaction name="actionTicketReport"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -1387,6 +1402,16 @@
   <action name="actionExportCustomers">
    <property name="text">
     <string>Customers</string>
+   </property>
+  </action>
+  <action name="actionProductReport">
+   <property name="text">
+    <string>Product Report</string>
+   </property>
+  </action>
+  <action name="actionTicketReport">
+   <property name="text">
+    <string>Ticket Report</string>
    </property>
   </action>
  </widget>

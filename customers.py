@@ -9,6 +9,11 @@ from events import Events
 class Customers:
     @staticmethod
     def checkDni():
+        """
+        Comprobar de que el dni tenga el formato correcto
+        :return:
+        :rtype: None
+        """
         try:
             globals.ui.le_dni.editingFinished.disconnect(Customers.checkDni)
             dni = globals.ui.le_dni.text()
@@ -37,6 +42,13 @@ class Customers:
 
     @staticmethod
     def capitalizar(texto, widget):
+        """
+        Convierte el texto del widget la primera en mayúscula
+        :param texto: Texto
+        :type texto: basestring
+        :param widget: Widget
+        :type widget: ui
+        """
         try:
             texto = texto.title()
             widget.setText(texto)
@@ -45,6 +57,11 @@ class Customers:
 
     @staticmethod
     def checkMail(email):
+        """
+        Comprobar de que el email sea válido
+        :param email: Email del customer
+        :type email: basestring
+        """
         patron = r'^[\w\.-]+@[\w\.-]+\.\w+$'
         if re.match(patron, email):
             globals.ui.le_email.setStyleSheet('background-color: rgb(255, 255, 220); color: black;')
@@ -56,6 +73,11 @@ class Customers:
 
     @staticmethod
     def checkMobil(numero):
+        """
+        Comrpobar que el móvil sea válido
+        :param numero: Número del customer
+        :type numero: basestring
+        """
         patron = r'^[67]\d{8}$'
         if re.match(patron, numero):
             globals.ui.le_email.setStyleSheet('background-color: rgb(255, 255, 220); color: black;')
@@ -67,6 +89,13 @@ class Customers:
 
     @staticmethod
     def setTableData(historical=True):
+        """
+        Establecer los datos de la tabla, obteniendo directamente desde la base de datos
+        :param historical: Mostrar solo los clientes que esten activos
+        :type historical: bool
+        :return:
+        :rtype: None
+        """
         try:
             all_customers = Connection.getCustomers(historical)
 
@@ -103,6 +132,11 @@ class Customers:
 
     @staticmethod
     def selectCustomer():
+        """
+        Seleccionar el customer y establecer los datos en los inputs
+        :return:
+        :rtype: None
+        """
         try:
             #globals.ui.le_dni.setEnabled(False)
             Utils.clearStyles()
@@ -137,6 +171,11 @@ class Customers:
 
     @staticmethod
     def deleteCustomer():
+        """
+        Eliminar customer obteniendo los datos en los inputs
+        :return:
+        :rtype: None
+        """
         try:
             Utils.disableLineEdit(globals.ui.le_dni)
             mbox = QtWidgets.QMessageBox()
@@ -170,6 +209,9 @@ class Customers:
             print("error en deleteCustomer ", error)
     @staticmethod
     def getCustomersByHistorical():
+        """
+        Establecer la comunicación del historical checkbox con la tabla para cargar los datos
+        """
         try:
             historical_checked = globals.ui.chkb_hystorical.isChecked()
             Customers.setTableData(historical_checked)
@@ -178,6 +220,11 @@ class Customers:
 
     @staticmethod
     def saveCustomer():
+        """
+        Guardar customer obteniendo todos los datos desde sus inputs
+        :return:
+        :rtype: None
+        """
         try:
             all_data_boxes = [globals.ui.le_dni, globals.ui.le_date, globals.ui.le_surname, globals.ui.le_name,
                               globals.ui.le_email, globals.ui.le_phone, globals.ui.le_address, globals.ui.cb_province, globals.ui.cb_city]
@@ -211,6 +258,9 @@ class Customers:
 
     @staticmethod
     def clearData():
+        """
+        Vaciar todos los datos de los inputs
+        """
         try:
             all_data_boxes = [globals.ui.le_dni, globals.ui.le_date, globals.ui.le_surname, globals.ui.le_name,
                               globals.ui.le_email, globals.ui.le_phone, globals.ui.le_address]
@@ -228,6 +278,11 @@ class Customers:
 
     @staticmethod
     def modifyCustomer():
+        """
+        Modificar los datos del customer obteniendo los nuevos valores en los inputs
+        :return:
+        :rtype: None
+        """
         try:
             Utils.disableLineEdit(globals.ui.le_dni)
             mbox = QtWidgets.QMessageBox()
@@ -286,6 +341,11 @@ class Customers:
 
     @staticmethod
     def getCustomerById():
+        """
+        Obtener los datos del customer, buscando en la base de datos por su DNI
+        :return:
+        :rtype: None
+        """
         try:
             #globals.ui.le_dni.setEnabled(False)
             Utils.disableLineEdit(globals.ui.le_dni)

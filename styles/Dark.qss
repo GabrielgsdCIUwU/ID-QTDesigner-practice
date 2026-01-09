@@ -154,32 +154,32 @@ QPushButton:disabled {
 
 /*Save and Modify buttons*/
 QPushButton#btn_save_cust, QPushButton#btn_modify_cust, QPushButton#btn_clear, QPushButton#btn_save_product,
-QPushButton#btn_modify_product, QPushButton#btn_clear_product{
+QPushButton#btn_modify_product, QPushButton#btn_clear_product, QPushButton#btn_save_invoice, QPushButton#btn_clear_invoice, QPushButton#btn_save_sale {
     background-color: #3b82f6;
     color: #ffffff;
 }
 
 QPushButton#btn_save_cust:hover, QPushButton#btn_modify_cust:hover, QPushButton#btn_clear:hover, QPushButton#btn_save_product:hover,
-QPushButton#btn_modify_product:hover, QPushButton#btn_clear_product:hover{
+QPushButton#btn_modify_product:hover, QPushButton#btn_clear_product:hover, QPushButton#btn_save_invoice:hover, QPushButton#btn_clear_invoice:hover, QPushButton#btn_save_sale:hover{
     background-color: #5491DB;
 }
 
 QPushButton#btn_save_cust:pressed, QPushButton#btn_modify_cust:pressed, QPushButton#btn_clear:pressed, QPushButton#btn_save_product:pressed,
-QPushButton#btn_modify_product:pressed, QPushButton#btn_clear_product:pressed {
+QPushButton#btn_modify_product:pressed, QPushButton#btn_clear_product:pressed, QPushButton#btn_save_invoice:pressed, QPushButton#btn_clear_invoice:pressed, QPushButton#btn_save_sale:hover {
     background-color: #1e40af;
 }
 
 /*Delete Button*/
-QPushButton#btn_del_cust, QPushButton#btn_delete_product {
+QPushButton#btn_del_cust, QPushButton#btn_delete_product, QPushButton#btn_delete_invoice {
     background-color: #ed0048;
     color: #ffffff;
 }
 
-QPushButton#btn_del_cust:hover, QPushButton#btn_delete_product:hover {
+QPushButton#btn_del_cust:hover, QPushButton#btn_delete_product:hover, QPushButton#btn_delete_invoice:hover {
     background-color: #ff2056;
 }
 
-QPushButton#btn_del_cust:pressed,QPushButton#btn_delete_product:pressed {
+QPushButton#btn_del_cust:pressed,QPushButton#btn_delete_product:pressed, QPushButton#btn_delete_invoice:pressed {
     background-color: #b72340;
 }
 

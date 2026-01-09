@@ -1,6 +1,6 @@
 /* Global Application Styles - Light Mode */
 QWidget {
-    background-color: #ffffff;
+    background-color: #EBEBEB;
     color: #1f2937;
     font-family: ui-sans-serif, system-ui, sans-serif;
     font-size: 14px;
@@ -13,7 +13,7 @@ QMainWindow {
 
 /* Menu Dropdown */
 QMenu {
-    background-color: #ffffff;
+    background-color: #EBEBEB;
     color: #1f2937;
     border: 1px solid #e5e7eb;
     border-radius: 6px;
@@ -33,7 +33,7 @@ QMenu::item:selected {
 /* Tab Widget */
 QTabWidget::pane {
     border: 1px solid #e5e7eb;
-    background-color: #ffffff;
+    background-color: #EBEBEB;
     border-radius: 6px;
 }
 
@@ -49,7 +49,7 @@ QTabBar::tab {
 }
 
 QTabBar::tab:selected {
-    background-color: #ffffff;
+    background-color: #EBEBEB;
     color: #1f2937;
     border-bottom: 2px solid #60A5FA;
 }
@@ -87,7 +87,7 @@ QLineEdit::hover {
 
 QLineEdit:focus {
     border: 1px solid #60A5FA;
-    background-color: #ffffff;
+    background-color: #EBEBEB;
 }
 
 QLineEdit:disabled {
@@ -148,30 +148,33 @@ QPushButton:disabled {
 }
 
 /*Save and Modify buttons*/
-QPushButton#btn_save_cust, QPushButton#btn_modify_cust, QPushButton#btn_clear {
+QPushButton#btn_save_cust, QPushButton#btn_modify_cust, QPushButton#btn_clear, QPushButton#btn_save_product,
+QPushButton#btn_modify_product, QPushButton#btn_clear_product, QPushButton#btn_save_invoice, QPushButton#btn_clear_invoice, QPushButton#btn_save_sale {
     background-color: #60A5FA;
     color: #ffffff;
 }
 
-QPushButton#btn_save_cust:hover, QPushButton#btn_modify_cust:hover, QPushButton#btn_clear:hover {
+QPushButton#btn_save_cust:hover, QPushButton#btn_modify_cust:hover, QPushButton#btn_clear:hover, QPushButton#btn_save_product:hover,
+QPushButton#btn_modify_product:hover, QPushButton#btn_clear_product:hover, QPushButton#btn_save_invoice:hover, QPushButton#btn_clear_invoice:hover, QPushButton#btn_save_sale:hover {
     background-color: #3b82f6;
 }
 
-QPushButton#btn_save_cust:pressed, QPushButton#btn_modify_cust:pressed, QPushButton#btn_clear:pressed {
+QPushButton#btn_save_cust:pressed, QPushButton#btn_modify_cust:pressed, QPushButton#btn_clear:pressed, QPushButton#btn_save_product:pressed,
+QPushButton#btn_modify_product:pressed, QPushButton#btn_clear_product:pressed, QPushButton#btn_save_invoice:pressed, QPushButton#btn_clear_invoice:pressed, QPushButton#btn_save_sale:hover {
     background-color: #2563eb;
 }
 
 /*Delete Button*/
-QPushButton#btn_del_cust {
+QPushButton#btn_del_cust, QPushButton#btn_delete_product {
     background-color: #ed0048;
     color: #ffffff;
 }
 
-QPushButton#btn_del_cust:hover {
+QPushButton#btn_del_cust:hover, QPushButton#btn_delete_product:hover {
     background-color: #ff2056;
 }
 
-QPushButton#btn_del_cust:pressed {
+QPushButton#btn_del_cust:pressed,QPushButton#btn_delete_product:pressed {
     background-color: #b72340;
 }
 
@@ -187,7 +190,7 @@ QCheckBox::indicator {
     height: 18px;
     border-radius: 4px;
     border: 2px solid #d1d5db;
-    background-color: #ffffff;
+    background-color: #EBEBEB;
 }
 
 QCheckBox::indicator:hover {
@@ -201,7 +204,7 @@ QCheckBox::indicator:checked {
 
 /* Table Widget */
 QTabWidget {
-    background-color: #ffffff;
+    background-color: #EBEBEB;
     alternate-background-color: #f9fafb;
     color: #1f2937;
     gridline-color: #e5e7eb;
@@ -265,14 +268,14 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
 
 /* Dialog */
 QDialog {
-    background-color: #ffffff;
+    background-color: #EBEBEB;
     color: #1f2937;
 }
 
 
 /* Calendar Widget */
 QCalendarWidget {
-    background-color: #ffffff;
+    background-color: #EBEBEB;
     color: #1f2937;
 }
 
@@ -288,7 +291,7 @@ QCalendarWidget QToolButton:hover {
 }
 
 QCalendarWidget {
-    background-color: #ffffff;
+    background-color: #EBEBEB;
     selection-background-color: #60A5FA;
     selection-color: #ffffff;
 }

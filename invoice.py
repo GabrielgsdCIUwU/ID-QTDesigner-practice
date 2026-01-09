@@ -3,26 +3,56 @@ from PyQt6 import QtCore, QtWidgets
 from connection import Connection
 import globals
 from datetime import datetime
+from reports import Reports
 
 
 class InvoiceFormatter:
+    """
+        Utility class for formatting raw data into displayable strings for the Invoice UI.
+    """
+
     @staticmethod
     def fullName(data):
+        """
+            Concatenates the surname and name from the data tuple.
+
+            :param data: A list or tuple containing customer data.
+                            Expected indices: [2] Name, [3] Surname.
+            :return: A string representing the full name.
+        """
         return f"{data[3]} {data[2]}"
 
     @staticmethod
     def fullAddress(data):
+        """
+            Formats the full address from the data tuple.
+
+            :param data: A list or tuple containing customer data.
+                             Expected indices: [6] Address, [7] City, [8] Zip Code.
+            :return: A string representing the formatted address.
+        """
         return f"{data[6]} {data[8]} {data[7]}"
 
 
 
 class Invoice:
+    """
+        Manages the logic for the Invoice section of the application.
+        Handles UI interactions, database CRUD operations for invoices and sales,
+        and table management.
+    """
     _dummy_customer = "00000000T"
     _all_data_boxes = []
     _mapping = {}
 
     @staticmethod
     def initDataBoxes():
+        """
+            Initializes the references to UI widgets and maps them to specific data indices.
+
+            Sets up the `_mapping` dictionary used to populate customer details
+            automatically when a search is performed.
+        """
         Invoice._all_data_boxes = [globals.ui.le_dni_invoice, globals.ui.lbl_date_factura , globals.ui.lbl_name_invoice , globals.ui.lbl_address_invoice, globals.ui.lbl_phone_invoice, globals.ui.lbl_invoicetype_invoice, globals.ui.lbl_status_invoice, globals.ui.lbl_num_factura]
 
         def display_historical(input_historical):
@@ -43,6 +73,13 @@ class Invoice:
 
     @staticmethod
     def searchInvoiceCustomer():
+        """
+            Searches for a customer by DNI and populates the invoice UI fields.
+
+            Retrieves the DNI from the line edit. If the customer is not found,
+            it defaults to the generic `_dummy_customer`. Populates labels
+            based on the `_mapping` dictionary.
+        """
         try:
             dni = globals.ui.le_dni_invoice.text().upper().strip()
             customer_data = Connection.getCustomerData(dni, "dni")
@@ -62,10 +99,18 @@ class Invoice:
 
     @staticmethod
     def saveInvoice():
+        """
+            Creates a new Invoice record in the database.
+
+            Validates that a DNI exists. Generates the current date.
+            If successful, updates the invoice table view. Displays
+            success or error message boxes to the user.
+        """
+
         try:
             dni = globals.ui.le_dni_invoice.text().upper().strip()
 
-            today_date = datetime.now().strftime("%d-%m-%Y")
+            today_date = datetime.now().strftime("%d/%m/%Y")
 
             if not dni or not today_date:
                 mbox = QtWidgets.QMessageBox()
@@ -98,17 +143,32 @@ class Invoice:
 
     @staticmethod
     def clearData():
+        """
+            Clears all invoice-related UI fields and resets the sales table.
+
+            Resets the row count to 1, unblocks signals, and re-enables editing triggers.
+        """
         try:
             for box in Invoice._all_data_boxes:
                 box.clear()
 
             globals.ui.table_sales.clearContents()
+            globals.ui.table_sales.setRowCount(0)
+            globals.ui.table_sales.setRowCount(1)
+            globals.ui.table_sales.blockSignals(False)
+            globals.ui.table_sales.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.AllEditTriggers)
 
         except Exception as e:
             print(f"Error en clearData: {e}")
 
     @staticmethod
     def activeSales(create_new_row=False):
+        """
+            Configures the sales table structure and adds rows.
+
+            :param create_new_row: If True, appends a new row to the end of the table.
+                                   If False, resets the table to the initial state or current count.
+        """
         try:
             sales_table = globals.ui.table_sales
             current_count = sales_table.rowCount()
@@ -145,6 +205,16 @@ class Invoice:
 
     @staticmethod
     def cellChangedSales(item):
+        """
+            Event handler for changes in the sales table cells.
+
+            Logic:
+            - If Column 0 (Product ID) changes: Fetches product details and fills Name/Price.
+            - If Column 3 (Quantity) changes: Calculates line total (Price * Quantity).
+            - If the row is complete, calculates invoice totals and adds a new empty row.
+
+            :param item: The QTableWidgetItem that was modified.
+        """
         try:
             sales_table = globals.ui.table_sales
             current_row = item.row()
@@ -163,6 +233,12 @@ class Invoice:
                     try:
                         product_row_data = Connection.getProductData(text_value, "id")
                         if not product_row_data:
+                            mbox = QtWidgets.QMessageBox()
+                            mbox.setWindowTitle("Warning")
+                            mbox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+                            mbox.setText("There is no product with that ID")
+                            mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+                            mbox.exec()
                             return
 
                         product_map = Invoice.productRawDataToMap(product_row_data)
@@ -210,6 +286,12 @@ class Invoice:
 
     @staticmethod
     def calculateTotals():
+        """
+            Calculates the Subtotal, IVA (VAT), and Total for the current invoice.
+
+            Iterates through the sales table, sums the line totals, applies a 21% IVA,
+            and updates the corresponding UI labels.
+        """
         try:
             table = globals.ui.table_sales
             subtotal = 0.0
@@ -235,6 +317,12 @@ class Invoice:
 
     @staticmethod
     def setTableFacturaData(show_data_when_tab = False):
+        """
+            Retrieves all invoices from the database and populates the Invoice Table.
+
+            :param show_data_when_tab: If True, automatically selects and displays data
+                                        for the most recent invoice (index 0).
+        """
         try:
             all_data_invoices = Connection.getAllInvoices()
 
@@ -242,8 +330,8 @@ class Invoice:
             index = 0
             for invoice in all_data_invoices:
                 if show_data_when_tab and invoice == all_data_invoices[0]:
-                    globals.ui.lbl_num_factura.setText(invoice[0])
-                    globals.ui.lbl_date_factura.setText(invoice[2])
+                    globals.ui.lbl_num_factura.setText(str(invoice[0]))
+                    globals.ui.lbl_date_factura.setText(str(invoice[2]))
 
                 table.setRowCount(index + 1)
                 table.setItem(index, 0, QtWidgets.QTableWidgetItem(str(invoice[0])))
@@ -264,6 +352,13 @@ class Invoice:
 
     @staticmethod
     def selectInvoice():
+        """
+            Handles the user selection of a specific invoice from the table.
+
+            Populates header information (ID, Date, Customer).
+            Locks the sales table for editing if the invoice already has saved sales.
+            Loads the associated sales items.
+        """
         try:
             row = globals.ui.table_invoice.selectedItems()
             data = [dato.text() for dato in row]
@@ -273,12 +368,14 @@ class Invoice:
             globals.ui.lbl_date_factura.setText(data[2])
             Invoice.searchInvoiceCustomer()
 
-
+            button_save_sale = globals.ui.btn_save_sale
             if not Connection.getSale(data[0]):
                 globals.ui.table_sales.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.AllEditTriggers)
+                button_save_sale.setEnabled(True)
             else:
                 globals.ui.table_sales.blockSignals(True)
                 globals.ui.table_sales.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
+                button_save_sale.setEnabled(False)
 
             Invoice.setTableSalesData(data[0])
 
@@ -287,6 +384,12 @@ class Invoice:
 
     @staticmethod
     def productRawDataToMap(data):
+        """
+            Converts raw database product tuples into a structured dictionary.
+
+            :param data: Tuple containing product details.
+            :return: Dictionary with keys: id, name, quantity, type, price, currency.
+        """
         try:
             return {
                 "id": data[0],
@@ -303,9 +406,17 @@ class Invoice:
 
     @staticmethod
     def saveSales():
+        """
+            Iterates through the sales table and saves each line item to the database.
+
+            Validates that all required fields are present.
+            If successful, prompts the user to print a ticket/report.
+            Finally, clears the UI data.
+        """
         try:
             table = globals.ui.table_sales
             id_factura = globals.ui.lbl_num_factura.text().strip()
+
             for r in range(table.rowCount()):
                 id_product = table.item(r, 0).text().strip()
                 product_name = table.item(r, 1).text().strip()
@@ -313,34 +424,52 @@ class Invoice:
                 amount = table.item(r, 3).text().strip()
                 total_item = table.item(r, 4).text().strip()
 
-                if not id_factura or not id_product or not product_name or not unit_price or not amount or not total_item:
+                if table.rowCount() == 1 and (not id_factura or not id_product or not product_name or not unit_price or not amount or not total_item):
                     mbox = QtWidgets.QMessageBox()
                     mbox.setWindowTitle("Error")
+                    mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
                     mbox.setText("All data fields are required")
                     mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
                     mbox.exec()
                     return
 
+                # In case is an empty row
+                if not product_name or not unit_price or not amount or not total_item:
+                    continue
+
                 if not Connection.addSale([id_factura, id_product, amount, product_name, unit_price, total_item]):
                     mbox = QtWidgets.QMessageBox()
                     mbox.setWindowTitle("Error")
+                    mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
                     mbox.setText("Error saving the sales")
                     mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
                     mbox.exec()
                     return
 
 
-                mbox = QtWidgets.QMessageBox()
-                mbox.setWindowTitle("Success")
-                mbox.setText("Successfully saved the sales")
-                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
-                mbox.exec()
+            mbox = QtWidgets.QMessageBox()
+            mbox.setWindowTitle("Success")
+            mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
+            mbox.setText("Successfully saved the sales. Do you want to print the sale?")
+            mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+            mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.No)
+
+            if mbox.exec():
+                Reports.ticket()
+
+
+            Invoice.clearData()
 
         except Exception as e:
             print(f"Error en saveSales: {e}")
 
     @staticmethod
     def setTableSalesData(id_factura):
+        """
+            Loads sales records associated with a specific invoice ID into the UI table.
+
+            :param id_factura: The ID of the invoice to fetch sales for.
+        """
         try:
             ui_table = globals.ui.table_sales
 
@@ -390,6 +519,66 @@ class Invoice:
             ui_table.blockSignals(False)
         except Exception as e:
             print("error en cargar setTableSalesData", e)
+
+    @staticmethod
+    def deleteInvoice():
+        """
+            Deletes the selected invoice and its associated sales from the database.
+
+            Requires user confirmation via a message box.
+            Refreshes the invoice list and clears fields upon success.
+        """
+        try:
+            id_factura = globals.ui.lbl_num_factura.text().strip()
+
+            mboxQuestion = QtWidgets.QMessageBox()
+            mboxQuestion.setWindowTitle("Delete Invoice")
+            mboxQuestion.setIcon(QtWidgets.QMessageBox.Icon.Question)
+            mboxQuestion.setText("Do you want to delete the invoice?")
+            mboxQuestion.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+            mboxQuestion.setDefaultButton(QtWidgets.QMessageBox.StandardButton.No)
+
+            if mboxQuestion.exec() == QtWidgets.QMessageBox.StandardButton.No:
+                mboxQuestion.hide()
+                return
+
+            if not id_factura:
+                mbox = QtWidgets.QMessageBox()
+                mbox.setWindowTitle("Error")
+                mbox.setText("You need to select an invoice")
+                mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.exec()
+                return
+
+            if not Connection.deleteInvoiceAndSale(id_factura):
+                mbox = QtWidgets.QMessageBox()
+                mbox.setWindowTitle("Error")
+                mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+                mbox.setText("Error deleting invoice")
+                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.exec()
+                return
+
+            mbox = QtWidgets.QMessageBox()
+            mbox.setWindowTitle("Success")
+            mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
+            mbox.setText("Successfully deleted the invoice")
+            mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+            mbox.exec()
+
+            globals.ui.le_dni_invoice.setText("00000000T")
+            Invoice.searchInvoiceCustomer()
+            Invoice.activeSales()
+        except Exception as e:
+            print(f"Error en deleteInvoice: {e}")
+
+    @property
+    def dummy_customer(self):
+        """
+            Getter for the default dummy customer DNI.
+        """
+        return self._dummy_customer
 
 
 
