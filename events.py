@@ -18,8 +18,15 @@ import styles
 
 
 class Events:
+    """
+        Global event handlers for the application, including file operations,
+        UI resizing, and system dialogs.
+    """
     @staticmethod
     def messageExit(self=None):
+        """
+            Displays a confirmation dialog before closing the application.
+        """
         try:
             mbox = QtWidgets.QMessageBox()
             mbox.setIcon(QtWidgets.QMessageBox.Icon.Question)
@@ -40,6 +47,9 @@ class Events:
 
     @staticmethod
     def openCalendar(self=None):
+        """
+            Opens the modal calendar dialog.
+        """
         try:
             globals.vencal.show()
         except Exception as e:
@@ -47,6 +57,12 @@ class Events:
 
     @staticmethod
     def loadData(qDate):
+        """
+            Transfers the selected date from the calendar to the main form.
+
+            :param qDate: Selected date.
+            :type qDate: QDate
+        """
         try:
             data = ('{:02d}/{:02d}/{:4d}'.format(qDate.day(), qDate.month(), qDate.year()))
             if globals.ui.pan_main.currentIndex() == 0:
@@ -59,6 +75,9 @@ class Events:
 
     @staticmethod
     def loadProvinces():
+        """
+            Loads the list of provinces into the corresponding combo box.
+        """
         try:
             globals.ui.cb_province.clear()
             globals.ui.cb_province.addItems(Connection.getProvinces())
@@ -67,6 +86,9 @@ class Events:
 
     @staticmethod
     def loadCities():
+        """
+            Updates the city combo box based on the currently selected province.
+        """
         try:
             globals.ui.cb_city.clear()
             province = globals.ui.cb_province.currentText()
@@ -76,6 +98,9 @@ class Events:
 
     @staticmethod
     def loadProductFamily():
+        """
+            Populates the product family combo box with predefined values.
+        """
         try:
             globals.ui.cb_family.clear()
             all_product_family = ["Foods", "Furniture", "Clothes", "Electronic"]
@@ -85,6 +110,10 @@ class Events:
 
     @staticmethod
     def loadCurrency():
+        """
+            Populates the currency combo box with predefined symbols.
+        """
+
         try:
             globals.ui.cb_currency.clear()
             all_currency = ["€", "$"]
@@ -95,6 +124,9 @@ class Events:
 
     @staticmethod
     def loadSettings():
+        """
+            Loads configuration settings (like themes) into the settings dialog.
+        """
         try:
             globals.settings.cb_themes.clear()
             globals.settings.cb_themes.addItems(styles.get_all_styles())
@@ -103,6 +135,9 @@ class Events:
 
     @staticmethod
     def resizeCustomerTable():
+        """
+            Configures header behavior and resizing for the Customer table.
+        """
         try:
             header = globals.ui.table_customer.horizontalHeader()
             for i in range(header.count()):
@@ -120,6 +155,9 @@ class Events:
 
     @staticmethod
     def resizeProductTable():
+        """
+            Configures header behavior and resizing for the Product table.
+        """
         try:
             header = globals.ui.table_product.horizontalHeader()
             for i in range(header.count()):
@@ -137,6 +175,9 @@ class Events:
 
     @staticmethod
     def resizeSalesTable():
+        """
+            Configures header behavior and resizing for the Sales table.
+        """
         try:
             header = globals.ui.table_sales.horizontalHeader()
             for i in range(header.count()):
@@ -156,6 +197,9 @@ class Events:
 
     @staticmethod
     def messageAbout():
+        """
+            Displays the "About" information dialog.
+        """
         try:
             globals.about.show()
         except Exception as e:
@@ -163,6 +207,9 @@ class Events:
 
     @staticmethod
     def settingsWindow():
+        """
+            Initializes and displays the settings configuration window.
+        """
         try:
             settings_data = globals.settings.loadSettings()
             globals.settings.displayCurrentSettings(settings_data)
@@ -172,6 +219,10 @@ class Events:
 
     @staticmethod
     def saveBackup():
+        """
+            Creates a compressed .zip backup of the SQLite database.
+        """
+
         try:
             date = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
             filename = str(date + '_backup.zip')
@@ -200,6 +251,9 @@ class Events:
             print("Error en saveBackup: ", e)
     @staticmethod
     def restoreBackup():
+        """
+            Restores a database file from a selected .zip backup.
+        """
         try:
             filename = globals.dialog_open.getOpenFileName(None, "Restore Backup file", '', '*.zip;;All Files (*)')
             file = filename[0]
@@ -227,6 +281,9 @@ class Events:
 
     @staticmethod
     def exportCustomersToCsv():
+        """
+            Exports all customer data from the database to a CSV file.
+        """
         try:
             date = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
             filename = str(date + '_customers.csv')
@@ -284,6 +341,9 @@ class Events:
 
     @staticmethod
     def saveSettings():
+        """
+            Saves user preferences (like theme) from the settings UI to the database.
+        """
         try:
             all_settings_data = []
 
@@ -317,6 +377,9 @@ class Events:
 
     @staticmethod
     def showStatusBar():
+        """
+            Initializes the status bar with the current date and version number.
+        """
         try:
             today = datetime.datetime.now().strftime("%d/%m/%Y")
             label_status = QtWidgets.QLabel()

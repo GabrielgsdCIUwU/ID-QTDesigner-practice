@@ -7,9 +7,14 @@ from utils.utils import Utils
 
 
 class Products:
-
+    """
+        Logic layer for Product management, including input validation and inventory tracking.
+    """
     @staticmethod
     def checkUnitPrice():
+        """
+            Validates that the unit price is a positive float and formats it to two decimals.
+        """
         price = globals.ui.le_unit_price.text()
         try:
             price_float = float(price)
@@ -28,6 +33,9 @@ class Products:
 
     @staticmethod
     def setTableData():
+        """
+            Loads the list of all products into the UI table.
+        """
         try:
             all_products = Connection.getProducts()
 
@@ -53,6 +61,9 @@ class Products:
 
     @staticmethod
     def saveProduct():
+        """
+            Saves a new product entry from the form to the database.
+        """
         try:
             all_data_boxes = [globals.ui.le_name_product, globals.ui.le_stock, globals.ui.cb_family, globals.ui.le_unit_price, globals.ui.cb_currency]
 
@@ -78,6 +89,9 @@ class Products:
 
     @staticmethod
     def selectProduct():
+        """
+            Loads the selected product's information from the table into the entry form.
+        """
         try:
             Utils.clearStyles()
             Utils.disableLineEdit(globals.ui.le_name_product)
@@ -98,6 +112,9 @@ class Products:
 
     @staticmethod
     def clearData():
+        """
+            Resets the product form fields.
+        """
         try:
             all_data_boxes = [globals.ui.le_name_product, globals.ui.le_stock, globals.ui.le_unit_price, globals.ui.cb_currency]
 
@@ -113,6 +130,9 @@ class Products:
 
     @staticmethod
     def deleteProduct():
+        """
+            Removes the current product from the database after confirmation.
+        """
         try:
             Utils.disableLineEdit(globals.ui.le_name_product)
             mbox = QtWidgets.QMessageBox()
@@ -147,6 +167,9 @@ class Products:
 
     @staticmethod
     def modifyProduct():
+        """
+            Updates product details in the database based on form inputs.
+        """
         try:
             Utils.disableLineEdit(globals.ui.le_name_product)
             mbox = QtWidgets.QMessageBox()

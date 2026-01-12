@@ -6,11 +6,18 @@ import globals
 from PyQt6 import QtSql, QtWidgets
 
 class Connection:
+    """
+        Handles all database interactions for the SQLite backend, including CRUD operations
+        for customers, products, invoices, and sales.
+    """
     @staticmethod
     def db_connection():
         """
-        Devuelve si la conexión con la base de datos tuvo éxito o no
-        :return:
+        Initializes the connection to the SQLite database.
+
+        Checks if the database file exists and attempts to open it using QtSql.
+
+        :return: True if the connection is successful and the database is valid, False otherwise.
         :rtype: bool
         """
         ruta_db = './data/bbdd.sqlite'
@@ -43,9 +50,10 @@ class Connection:
     @staticmethod
     def getProvinces():
         """
-        Carga todas las provincias de la base de datos en SQL.
-        :return: Lista de provincias
-        :rtype: bytearray
+        Retrieves all province names from the database.
+
+        :return: A list of all province names.
+        :rtype: list
         """
         all_provinces = []
         query = QtSql.QSqlQuery()
@@ -59,11 +67,12 @@ class Connection:
     @staticmethod
     def getCities(province):
         """
-        Pasando una provincia devuelve todas las ciudades de esa provincia.
-        :param province: string
-        :type province: basestring
-        :return: Lista de ciudades
-        :rtype: bytearray
+        Retrieves all city names belonging to a specific province.
+
+        :param province: The name of the province to filter by.
+        :type province: str
+        :return: A list of city names.
+        :rtype: list
         """
         all_cities = []
         query = QtSql.QSqlQuery()
@@ -79,11 +88,12 @@ class Connection:
     @staticmethod
     def getCustomers(historical=True):
         """
-        Devuelve todos los clientes con la base de datos en SQL.
-        :param historical: true clientes activos. false todos los clientes
+        Retrieves customers from the database.
+
+        :param historical: If True, returns only active customers. If False, returns all.
         :type historical: bool
-        :return: Lista de clientes
-        :rtype: bytearray
+        :return: A list of lists containing customer data rows.
+        :rtype: list
         """
         if historical:
             historical_query = "SELECT * FROM customers where historical = 'True' order by surname;"
@@ -102,13 +112,14 @@ class Connection:
     @staticmethod
     def getCustomerData(data, type_search):
         """
-        Obten toda la información de un cliente con la base de datos en SQL.
-        :param data: Móvil o DNI.
-        :type data: basestring
-        :param type_search: Tipo de dato a buscar: dni, phone.
-        :type type_search: basestring
-        :return: Lista con los datos del cliente.
-        :rtype: bytearray
+        Fetches detailed information for a single customer based on DNI or phone number.
+
+        :param data: The search term (DNI string or Phone string).
+        :type data: str
+        :param type_search: The category of search ("dni" or "phone").
+        :type type_search: str
+        :return: A list containing all fields for the found customer.
+        :rtype: list
         """
         try:
             all_customer_data = []
@@ -130,10 +141,11 @@ class Connection:
     @staticmethod
     def deleteCustomer(dni):
         """
-        Establecer el cliente como histórico.
-        :param dni: DNI del cliente
-        :type dni: basestring
-        :return: Se ha ejecutado con éxito
+        Performs a logical deletion of a customer by setting their historical status to False.
+
+        :param dni: The DNI/NIE of the customer to "delete".
+        :type dni: str
+        :return: True if the update was successful, False otherwise.
         :rtype: bool
         """
         try:
@@ -151,10 +163,11 @@ class Connection:
     @staticmethod
     def addCustomer(data):
         """
-        Dar de alta un cliente
-        :param data: Datos del cliente
-        :type data: bytearray
-        :return: Se ha ejecutado con éxito
+        Inserts a new customer record into the database.
+
+        :param data: A list containing UI elements or strings in the required order.
+        :type data: list
+        :return: True if insertion was successful, False otherwise.
         :rtype: bool
         """
         try:
@@ -192,10 +205,11 @@ class Connection:
     @staticmethod
     def setCustomerData(data):
         """
-        Modifica los datos de un cliente
-        :param data: Todos los nuevos datos del cliente. orden: [DNI, adddata, surname, name, mail, mobile, address, province, city, invoicetype]
-        :type data: bytearray
-        :return: Se ha ejecutado con éxito
+        Updates an existing customer's information in the database.
+
+        :param data: A list containing updated values for all customer fields.
+        :type data: list
+        :return: True if the update was successful, False otherwise.
         :rtype: bool
         """
         try:
@@ -232,6 +246,14 @@ class Connection:
 
     @staticmethod
     def saveSettings(data):
+        """
+            Saves or replaces application settings in the database.
+
+            :param data: A list of tuples containing (setting_id, value).
+            :type data: list
+            :return: True if all settings were saved successfully, False otherwise.
+            :rtype: bool
+        """
         try:
             for key, value in data:
                 print(key, value)
@@ -250,6 +272,12 @@ class Connection:
 
     @staticmethod
     def getSettings():
+        """
+            Retrieves all application configuration settings from the database.
+
+            :return: A list of tuples containing (id, value).
+            :rtype: list
+        """
         try:
             all_settings = []
             query = QtSql.QSqlQuery()
@@ -268,9 +296,10 @@ class Connection:
     @staticmethod
     def getProducts():
         """
-        Obtener todos los productos de la base de datos
-        :return: Lista con los productos
-        :rtype: bytearray
+        Retrieves all product records from the products table.
+
+        :return: A list of lists containing product data.
+        :rtype: list
         """
         historical_query = "SELECT * FROM products;"
 
@@ -287,10 +316,11 @@ class Connection:
     @staticmethod
     def addProduct(data):
         """
-        Añade un nuevo producto
-        :param data: Datos del producto. Orden: [name, stock, family, unit_price, currency]
-        :type data: bytearray
-        :return: Se ha ejecutado con éxito
+        Inserts a new product into the inventory database.
+
+        :param data: A list containing [name, stock, family, price, currency].
+        :type data: list
+        :return: True if the product was added, False otherwise.
         :rtype: bool
         """
         try:
@@ -317,13 +347,14 @@ class Connection:
     @staticmethod
     def getProductData(product, search_type ="name"):
         """
-        Obtener toda la información de un producto
-        :param product: Nombre del producto o ID
-        :type product: basestring
-        :param search_type: Tipo de búsqueda: name o id
-        :type search_type: basestring
-        :return: Lista con todos los datos del producto
-        :rtype: bytearray
+        Retrieves specific product data by name or ID code.
+
+        :param product: The identifier (Name string or Code integer).
+        :type product: str|int
+        :param search_type: The type of search ("name" or "id").
+        :type search_type: str
+        :return: A list containing the product record fields.
+        :rtype: list
         """
         try:
             all_product_data = []
@@ -348,10 +379,11 @@ class Connection:
     @staticmethod
     def deleteProduct(product_name):
         """
-        Eliminar producto de la base de datos.
-        :param product_name: Nombre del producto
-        :type product_name: basestring
-        :return: Se ha ejecutado con éxito
+        Permanently removes a product from the database by its name.
+
+        :param product_name: The name of the product to delete.
+        :type product_name: str
+        :return: True if deletion was successful, False otherwise.
         :rtype: bool
         """
         try:
@@ -369,10 +401,11 @@ class Connection:
     @staticmethod
     def setProductData(data):
         """
-        Modificar datos de un producto en la base de datos
-        :param data: Nuevos datos del producto. Orden: [name, stock, family, unit_price, currency]
-        :type data: bytearray
-        :return: Se ha ejecutado con éxito
+        Updates product information such as stock, family, or price.
+
+        :param data: A list containing the updated product fields.
+        :type data: list
+        :return: True if the update was successful, False otherwise.
         :rtype: bool
         """
         try:
@@ -402,10 +435,11 @@ class Connection:
     @staticmethod
     def addInvoice(data):
         """
-        Añadir invoice a la base de datos
-        :param data: Nuevo invoice. Orden: [dni, date]
-        :type data: bytearray
-        :return: Se ha ejecutado con éxito
+        Registers a new invoice associated with a customer.
+
+        :param data: A list containing [dni, date_string].
+        :type data: list
+        :return: True if the invoice was created, False otherwise.
         :rtype: bool
         """
         # ! DATA FORMAT IS ["String", "String"...] NOT [globals.ui...]
@@ -429,9 +463,10 @@ class Connection:
     @staticmethod
     def getAllInvoices():
         """
-        Obtener todos los invoices de la base de datos.
-        :return: Lista con todos los invoices ordenador de forma descendente por idFac de la base de datos
-        :rtype: bytearray
+        Retrieves all invoices sorted by ID in descending order.
+
+        :return: A list of lists containing invoice records.
+        :rtype: list
         """
         try:
             all_data_invoices = []
@@ -453,9 +488,12 @@ class Connection:
     @staticmethod
     def addSale(data):
         """
-        Adding sale to the database
-        :param data: Values order: idFactura, idProduct, Amount, Product, UnitPrice, Total
-        :return: bool
+        Adds an individual sale item linked to a specific invoice ID.
+
+        :param data: List: [invoice_id, product_id, amount, name, unit_price, total].
+        :type data: list
+        :return: True if successful, False otherwise.
+        :rtype: bool
         """
         try:
             query = QtSql.QSqlQuery()
@@ -480,11 +518,12 @@ class Connection:
     @staticmethod
     def getSale(id_factura):
         """
-        Obtener los datos de sale de la base de datos.
-        :param id_factura: ID de la factura.
-        :type id_factura: basestring
-        :return: Todos los datos de sale.
-        :rtype: bytearray
+        Retrieves all line items (sales) associated with a specific invoice.
+
+        :param id_factura: The ID of the parent invoice.
+        :type id_factura: int|str
+        :return: A list of sale records.
+        :rtype: list
         """
         try:
             all_data_sales = []
@@ -506,6 +545,14 @@ class Connection:
 
     @staticmethod
     def deleteInvoice(id_factura):
+        """
+            Deletes an invoice header record.
+
+            :param id_factura: The ID of the invoice to delete.
+            :type id_factura: int|str
+            :return: True if successful.
+            :rtype: bool
+        """
         try:
             query = QtSql.QSqlQuery()
             query.prepare("DELETE FROM invoices WHERE idFac = :idFac")
@@ -520,6 +567,14 @@ class Connection:
 
     @staticmethod
     def deleteSale(id_factura):
+        """
+            Deletes all sale line items associated with a specific invoice.
+
+            :param id_factura: The ID of the invoice whose sales should be removed.
+            :type id_factura: int|str
+            :return: True if successful.
+            :rtype: bool
+        """
         try:
             query = QtSql.QSqlQuery()
             query.prepare("DELETE FROM sales WHERE idFactura = :idFac")
@@ -534,6 +589,14 @@ class Connection:
 
     @staticmethod
     def deleteInvoiceAndSale(id_factura):
+        """
+            Atomic operation to delete both the invoice and all its associated sales items.
+
+            :param id_factura: The ID of the invoice to purge.
+            :type id_factura: int|str
+            :return: True if both operations succeeded, False otherwise.
+            :rtype: bool
+        """
         if not Connection.deleteSale(id_factura):
             return False
 

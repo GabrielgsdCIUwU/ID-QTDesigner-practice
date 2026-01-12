@@ -9,6 +9,10 @@ from connection import Connection
 
 
 class Reports:
+    """
+        Generates PDF reports and documents (Tickets, Customer Lists, Product Lists)
+        using ReportLab.
+    """
     REPORT_DIR = ".\\data\\reports\\"
     IMG_DIR = ".\\img\\"
     DUMMY_CUSTOMER = "00000000T"
@@ -25,7 +29,7 @@ class Reports:
     @staticmethod
     def ticket():
         """
-        Orquestador principal para la generación del Ticket/Factura.
+        Generates and opens a PDF ticket for the currently selected invoice.
         """
         try:
             dni = globals.ui.le_dni_invoice.text().strip()
@@ -93,6 +97,9 @@ class Reports:
 
     @staticmethod
     def reportCustomers():
+        """
+            Generates a PDF containing the full list of customers.
+        """
         print("Report Customers")
         try:
             title = "Customers"
@@ -116,6 +123,9 @@ class Reports:
 
     @staticmethod
     def reportProducts():
+        """
+            Generates a PDF containing the full inventory list.
+        """
         print("Report Products")
         try:
             title = "Products List"
@@ -163,6 +173,13 @@ class Reports:
 
     @staticmethod
     def topHeaderReport(canvas_obj, title):
+        """
+            Draws the standard business header and logo on a PDF page.
+
+            :param canvas_obj: ReportLab canvas.
+            :param title: The report title.
+            :type title: str
+        """
         try:
             logo_path = os.path.join(Reports.IMG_DIR, "gabrielgsd.jpg")
 

@@ -14,11 +14,12 @@ class InvoiceFormatter:
     @staticmethod
     def fullName(data):
         """
-            Concatenates the surname and name from the data tuple.
+        Returns a formatted string 'Surname Name'.
 
-            :param data: A list or tuple containing customer data.
-                            Expected indices: [2] Name, [3] Surname.
-            :return: A string representing the full name.
+        :param data: Database record for a customer.
+        :type data: list
+        :return: Formatted name.
+        :rtype: str
         """
         return f"{data[3]} {data[2]}"
 

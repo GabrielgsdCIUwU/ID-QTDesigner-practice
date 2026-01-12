@@ -10,9 +10,11 @@ class Customers:
     @staticmethod
     def checkDni():
         """
-        Comprobar de que el dni tenga el formato correcto
-        :return:
-        :rtype: None
+            Validates the DNI/NIE format and control character.
+
+            Updates the background color of the input field to red on error or yellow on success.
+
+            :return: None
         """
         try:
             globals.ui.le_dni.editingFinished.disconnect(Customers.checkDni)
@@ -43,11 +45,12 @@ class Customers:
     @staticmethod
     def capitalizar(texto, widget):
         """
-        Convierte el texto del widget la primera en mayúscula
-        :param texto: Texto
-        :type texto: basestring
-        :param widget: Widget
-        :type widget: ui
+            Formats a string to title case and updates the specified widget.
+
+            :param texto: The input string.
+            :type texto: str
+            :param widget: The QLineEdit widget to update.
+            :type widget: QLineEdit
         """
         try:
             texto = texto.title()
@@ -58,9 +61,11 @@ class Customers:
     @staticmethod
     def checkMail(email):
         """
-        Comprobar de que el email sea válido
-        :param email: Email del customer
-        :type email: basestring
+        Validates the email format using regular expressions.
+
+        :param email: The email address to check.
+        :type email: str
+        :return: None
         """
         patron = r'^[\w\.-]+@[\w\.-]+\.\w+$'
         if re.match(patron, email):
@@ -74,9 +79,11 @@ class Customers:
     @staticmethod
     def checkMobil(numero):
         """
-        Comrpobar que el móvil sea válido
-        :param numero: Número del customer
-        :type numero: basestring
+        Validates Spanish mobile phone formats (starting with 6 or 7, 9 digits).
+
+        :param numero: The phone number string.
+        :type numero: str
+        :return: None
         """
         patron = r'^[67]\d{8}$'
         if re.match(patron, numero):
@@ -90,11 +97,11 @@ class Customers:
     @staticmethod
     def setTableData(historical=True):
         """
-        Establecer los datos de la tabla, obteniendo directamente desde la base de datos
-        :param historical: Mostrar solo los clientes que esten activos
+        Populates the main customer table with data from the database.
+
+        :param historical: Filter to show only active customers (True) or all (False).
         :type historical: bool
-        :return:
-        :rtype: None
+        :return: None
         """
         try:
             all_customers = Connection.getCustomers(historical)
@@ -133,9 +140,11 @@ class Customers:
     @staticmethod
     def selectCustomer():
         """
-        Seleccionar el customer y establecer los datos en los inputs
-        :return:
-        :rtype: None
+        Handles the event when a user clicks on a customer in the table.
+
+        Loads the selected customer's data into the form inputs for editing.
+
+        :return: None
         """
         try:
             #globals.ui.le_dni.setEnabled(False)
@@ -172,9 +181,9 @@ class Customers:
     @staticmethod
     def deleteCustomer():
         """
-        Eliminar customer obteniendo los datos en los inputs
-        :return:
-        :rtype: None
+        Prompts user for confirmation and archives the selected customer (logical delete).
+
+        :return: None
         """
         try:
             Utils.disableLineEdit(globals.ui.le_dni)
@@ -210,7 +219,9 @@ class Customers:
     @staticmethod
     def getCustomersByHistorical():
         """
-        Establecer la comunicación del historical checkbox con la tabla para cargar los datos
+        Triggers a table refresh based on the state of the "Historical" checkbox.
+
+        :return: None
         """
         try:
             historical_checked = globals.ui.chkb_hystorical.isChecked()
@@ -221,9 +232,9 @@ class Customers:
     @staticmethod
     def saveCustomer():
         """
-        Guardar customer obteniendo todos los datos desde sus inputs
-        :return:
-        :rtype: None
+        Collects data from form inputs and attempts to save a new customer to the database.
+
+        :return: None
         """
         try:
             all_data_boxes = [globals.ui.le_dni, globals.ui.le_date, globals.ui.le_surname, globals.ui.le_name,
@@ -259,7 +270,9 @@ class Customers:
     @staticmethod
     def clearData():
         """
-        Vaciar todos los datos de los inputs
+        Resets all customer form inputs to their default empty state.
+
+        :return: None
         """
         try:
             all_data_boxes = [globals.ui.le_dni, globals.ui.le_date, globals.ui.le_surname, globals.ui.le_name,
@@ -279,9 +292,9 @@ class Customers:
     @staticmethod
     def modifyCustomer():
         """
-        Modificar los datos del customer obteniendo los nuevos valores en los inputs
-        :return:
-        :rtype: None
+        Collects updated form data and saves modifications to an existing customer.
+
+        :return: None
         """
         try:
             Utils.disableLineEdit(globals.ui.le_dni)
@@ -342,9 +355,9 @@ class Customers:
     @staticmethod
     def getCustomerById():
         """
-        Obtener los datos del customer, buscando en la base de datos por su DNI
-        :return:
-        :rtype: None
+        Searches for a specific customer using the DNI currently entered in the line edit.
+
+        :return: None
         """
         try:
             #globals.ui.le_dni.setEnabled(False)
