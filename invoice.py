@@ -370,15 +370,12 @@ class Invoice:
             Invoice.searchInvoiceCustomer()
 
             button_save_sale = globals.ui.btn_save_sale
-            button_delete_invoice = globals.ui.btn_delete_invoice
             if not Connection.getSale(data[0]):
                 globals.ui.table_sales.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.AllEditTriggers)
                 button_save_sale.setEnabled(True)
-                button_delete_invoice.setEnabled(True)
             else:
                 globals.ui.table_sales.blockSignals(True)
                 globals.ui.table_sales.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
-                button_delete_invoice.setEnabled(False)
                 button_save_sale.setEnabled(False)
 
             Invoice.setTableSalesData(data[0])
@@ -550,6 +547,15 @@ class Invoice:
                 mbox = QtWidgets.QMessageBox()
                 mbox.setWindowTitle("Error")
                 mbox.setText("You need to select an invoice")
+                mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+                mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+                mbox.exec()
+                return
+
+            if Connection.getSale(id_factura):
+                mbox = QtWidgets.QMessageBox()
+                mbox.setWindowTitle("Error")
+                mbox.setText("This invoice has sales!")
                 mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
                 mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
                 mbox.exec()
