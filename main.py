@@ -100,6 +100,7 @@ class Main(QtWidgets.QMainWindow):
         globals.ui.le_dni_invoice.editingFinished.connect(Invoice.searchInvoiceCustomer)
         globals.ui.btn_save_sale.clicked.connect(Invoice.saveSales)
         globals.ui.btn_delete_invoice.clicked.connect(Invoice.deleteInvoice)
+        globals.ui.btn_delete_sale_row.clicked.connect(Invoice.deleteSaleRow)
 
         #Other functions in Invoice
         globals.ui.le_dni_invoice.setText("00000000T")
