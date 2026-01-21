@@ -430,6 +430,26 @@ class Connection:
         except Exception as error:
             print("Error setCustomerData: ", error)
 
+    @staticmethod
+    def updateStockProductData(data):
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("UPDATE products SET"
+                          " stock = :stock "
+                          " WHERE code = :code "
+                          )
+
+            order_values = [":code", ":stock"]
+            for i in range(len(order_values)):
+                value_text = str(data[i])
+                query.bindValue(order_values[i], value_text)
+
+            if not query.exec():
+                return False
+            return True
+        except Exception as error:
+            print("Error updateProduct: ", error)
+
 
     # Invoice section
     @staticmethod

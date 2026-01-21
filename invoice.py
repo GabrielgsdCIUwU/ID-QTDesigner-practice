@@ -3,6 +3,8 @@ from PyQt6 import QtCore, QtWidgets
 from connection import Connection
 import globals
 from datetime import datetime
+
+from products import Products
 from reports import Reports
 
 
@@ -456,6 +458,15 @@ class Invoice:
                     mbox.exec()
                     return
 
+                if not Invoice.reduceStock(id_product, amount):
+                    mbox = QtWidgets.QMessageBox()
+                    mbox.setWindowTitle("Error")
+                    mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+                    mbox.setText("Error updating the stock when saving sales")
+                    mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+                    mbox.exec()
+                    return
+
 
             mbox = QtWidgets.QMessageBox()
             mbox.setWindowTitle("Success")
@@ -469,9 +480,27 @@ class Invoice:
 
 
             Invoice.clearData()
+            Products.setTableData()
 
         except Exception as e:
             print(f"Error en saveSales: {e}")
+
+
+    @staticmethod
+    def reduceStock(id_product, amount):
+        try:
+            product_data = Connection.getProductData(id_product, "id")
+            current_stock = product_data[2]
+
+            updated_stock = int(current_stock) - int(amount)
+
+            if not Connection.updateStockProductData([id_product, updated_stock]):
+                return False
+
+            return True
+
+        except Exception as e:
+            print(f"Error en reduceStock: {e}")
 
     @staticmethod
     def setTableSalesData(id_factura):

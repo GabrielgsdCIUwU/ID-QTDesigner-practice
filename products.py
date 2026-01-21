@@ -1,4 +1,4 @@
-
+from PyQt6.QtGui import QColor
 from connection import Connection
 from PyQt6 import QtCore, QtWidgets
 import globals
@@ -54,6 +54,13 @@ class Products:
                 ui_table.item(index, 2).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter.AlignVCenter)
                 ui_table.item(index, 3).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter.AlignVCenter)
                 ui_table.item(index, 4).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter.AlignVCenter)
+
+                if int(product[2]) <= 5:
+                    ui_table.item(index, 1).setData(
+                    QtCore.Qt.ItemDataRole.BackgroundRole,
+                    QColor("red")
+                )
+
                 index += 1
 
         except Exception as e:
