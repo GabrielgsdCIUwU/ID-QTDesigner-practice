@@ -475,11 +475,15 @@ class Invoice:
             mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
             mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.No)
 
-            if mbox.exec():
+            if mbox.exec() == QtWidgets.QMessageBox.StandardButton.Yes:
                 Reports.ticket()
 
 
-            Invoice.clearData()
+
+            # Reload data and disable buttons
+            Invoice.setTableSalesData(id_factura)
+            Invoice.selectInvoice()
+
             Products.setTableData()
 
         except Exception as e:
@@ -532,11 +536,11 @@ class Invoice:
                 # ID Producto
                 ui_table.setItem(index, 0, QtWidgets.QTableWidgetItem(str(sale[2])))
                 # Nombre Producto
-                ui_table.setItem(index, 1, QtWidgets.QTableWidgetItem(str(sale[3])))
+                ui_table.setItem(index, 1, QtWidgets.QTableWidgetItem(str(sale[4])))
                 # Precio Unitario
-                ui_table.setItem(index, 2, QtWidgets.QTableWidgetItem(str(sale[4])))
+                ui_table.setItem(index, 2, QtWidgets.QTableWidgetItem(str(sale[5])))
                 # Cantidad
-                ui_table.setItem(index, 3, QtWidgets.QTableWidgetItem(str(sale[5])))
+                ui_table.setItem(index, 3, QtWidgets.QTableWidgetItem(str(sale[3])))
                 # Total Línea
                 ui_table.setItem(index, 4, QtWidgets.QTableWidgetItem(str(sale[6])))
 
