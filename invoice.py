@@ -161,6 +161,17 @@ class Invoice:
             globals.ui.table_sales.blockSignals(False)
             globals.ui.table_sales.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.AllEditTriggers)
 
+            button_save_sale = globals.ui.btn_save_sale
+            button_save_invoice = globals.ui.btn_save_invoice
+            btn_delete_invoice = globals.ui.btn_delete_invoice
+            button_delete_sale_row = globals.ui.btn_delete_sale_row
+
+            button_save_sale.setEnabled(True)
+            button_save_invoice.setEnabled(True)
+            btn_delete_invoice.setEnabled(True)
+            button_delete_sale_row.setEnabled(True)
+
+
         except Exception as e:
             print(f"Error en clearData: {e}")
 
