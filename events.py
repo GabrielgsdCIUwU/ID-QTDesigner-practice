@@ -259,7 +259,7 @@ class Events:
             file = filename[0]
             if file:
                 with zipfile.ZipFile(file, 'r', zipfile.ZIP_DEFLATED) as bbdd:
-                    bbdd.extractall(pwd='./data')
+                    bbdd.extractall(path='./data')
 
                 bbdd.close()
 
@@ -275,6 +275,10 @@ class Events:
                 Events.loadProvinces()
                 Events.loadCities()
                 customers.Customers.setTableData()
+                from products import Products
+                from invoice import Invoice
+                Products.setTableData()
+                Invoice.setTableFacturaData()
 
         except Exception as e:
             print("Error en restoreBackup: ", e)
