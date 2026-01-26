@@ -161,7 +161,7 @@ class Events:
         try:
             header = globals.ui.table_product.horizontalHeader()
             for i in range(header.count()):
-                if i == 3:
+                if i in (0, 4):
                     header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
                 else:
                     header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Stretch)

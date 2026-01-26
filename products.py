@@ -43,20 +43,22 @@ class Products:
             ui_table = globals.ui.table_product
             for product in all_products:
                 ui_table.setRowCount(index + 1)
-                ui_table.setItem(index, 0, QtWidgets.QTableWidgetItem(str(product[1])))
-                ui_table.setItem(index, 1, QtWidgets.QTableWidgetItem(str(product[2])))
-                ui_table.setItem(index, 2, QtWidgets.QTableWidgetItem(str(product[3])))
-                ui_table.setItem(index, 3, QtWidgets.QTableWidgetItem(str(product[4])))
-                ui_table.setItem(index, 4, QtWidgets.QTableWidgetItem(str(product[5])))
+                ui_table.setItem(index, 0, QtWidgets.QTableWidgetItem(str(product[0])))
+                ui_table.setItem(index, 1, QtWidgets.QTableWidgetItem(str(product[1])))
+                ui_table.setItem(index, 2, QtWidgets.QTableWidgetItem(str(product[2])))
+                ui_table.setItem(index, 3, QtWidgets.QTableWidgetItem(str(product[3])))
+                ui_table.setItem(index, 4, QtWidgets.QTableWidgetItem(str(product[4])))
+                ui_table.setItem(index, 5, QtWidgets.QTableWidgetItem(str(product[5])))
 
-                ui_table.item(index, 0).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
+                ui_table.item(index, 0).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter.AlignVCenter)
                 ui_table.item(index, 1).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft.AlignVCenter)
                 ui_table.item(index, 2).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter.AlignVCenter)
                 ui_table.item(index, 3).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter.AlignVCenter)
                 ui_table.item(index, 4).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter.AlignVCenter)
+                ui_table.item(index, 5).setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter.AlignVCenter)
 
                 if int(product[2]) <= 5:
-                    ui_table.item(index, 1).setData(
+                    ui_table.item(index, 2).setData(
                     QtCore.Qt.ItemDataRole.BackgroundRole,
                     QColor("red")
                 )
@@ -103,7 +105,7 @@ class Products:
             Utils.clearStyles()
             Utils.disableLineEdit(globals.ui.le_name_product)
             row_selected = globals.ui.table_product.selectedItems()
-            name_product_selected = row_selected[0].text()
+            name_product_selected = row_selected[1].text()
             all_product_data = Connection.getProductData(str(name_product_selected))
 
             all_data_boxes = [globals.ui.le_name_product, globals.ui.le_stock, globals.ui.cb_family, globals.ui.le_unit_price, globals.ui.cb_currency]
