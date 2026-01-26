@@ -450,6 +450,21 @@ class Connection:
         except Exception as error:
             print("Error updateProduct: ", error)
 
+    @staticmethod
+    def getProductFamilies():
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT DISTINCT family FROM products")
+            families = []
+            if query.exec():
+                while query.next():
+                    families.append(query.value(0))
+
+            return families
+        except Exception as error:
+            print("Error getProductFamilies: ", error)
+            return []
+
 
     # Invoice section
     @staticmethod

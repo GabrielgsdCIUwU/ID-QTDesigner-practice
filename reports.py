@@ -122,7 +122,22 @@ class Reports:
             print(f"Error en reportCustomers: {e}")
 
     @staticmethod
-    def reportProducts():
+    def filterProducts(all_products_data, only_low_stock = False, stock_family = None):
+        filtered_products = all_products_data[:]
+        if only_low_stock:
+            search_on_all_products_data = filtered_products[:]
+            products_with_low_stock = [product for product in search_on_all_products_data if product[2] <= 5]
+            filtered_products = products_with_low_stock
+
+        if stock_family:
+            search_on_all_products_data = filtered_products[:]
+            all_family_products = [product for product in search_on_all_products_data if str(product[3]).lower().strip()  == str(stock_family).lower().strip()]
+            filtered_products = all_family_products
+
+        return filtered_products
+
+    @staticmethod
+    def reportProducts(only_low_stock = False, stock_family = None):
         """
             Generates a PDF containing the full inventory list.
         """
@@ -131,7 +146,7 @@ class Reports:
             title = "Products List"
             pdf_path, _ = Reports._prepare_file_path("products")
 
-            all_products_data = Connection.getProducts()
+            all_products_data = Reports.filterProducts(Connection.getProducts(), only_low_stock, stock_family)
 
             c = canvas.Canvas(pdf_path)
             Reports.topHeaderReport(c, title)

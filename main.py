@@ -41,8 +41,7 @@ class Main(QtWidgets.QMainWindow):
 
         Invoice.initDataBoxes()
 
-    @staticmethod
-    def connect_signals_slot():
+    def connect_signals_slot(self):
         #conexion DB
         Customers.setTableData()
         Products.setTableData()
@@ -62,6 +61,8 @@ class Main(QtWidgets.QMainWindow):
         globals.ui.actionCustomerReport.triggered.connect(Reports.reportCustomers)
         globals.ui.actionProductReport.triggered.connect(Reports.reportProducts)
         globals.ui.actionTicketReport.triggered.connect(Reports.ticket)
+        globals.ui.actionProductLowStockReport.triggered.connect(lambda: Reports.reportProducts(True))
+        globals.ui.actionProductbyfamilyReport.triggered.connect(self.showFamilyReportSelector)
 
         #Tools
         globals.ui.actionBackup.triggered.connect(Events.saveBackup)
@@ -143,6 +144,28 @@ class Main(QtWidgets.QMainWindow):
     @staticmethod
     def setDefaultValues():
         globals.ui.le_date.setText('')
+
+    def showFamilyReportSelector(self):
+        try:
+            families = Connection.getProductFamilies()
+
+            if not families:
+                QtWidgets.QMessageBox.warning(self,"Family Report", "No families selected")
+                return
+
+            family_selected, ok = QtWidgets.QInputDialog.getItem(
+                self,
+                "Select Family",
+                "Select a family of products",
+                families,
+                0,
+                False
+            )
+
+            if ok and family_selected:
+                Reports.reportProducts(stock_family=family_selected)
+        except Exception as error:
+            print("Error showFamilyReportSelector: ", error)
 
 
 
