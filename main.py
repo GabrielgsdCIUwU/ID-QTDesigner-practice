@@ -55,6 +55,8 @@ class Main(QtWidgets.QMainWindow):
         globals.ui.dlg_about.triggered.connect(Events.messageAbout)
         globals.ui.actionSettings.triggered.connect(Events.settingsWindow)
         globals.ui.actionExportCustomers.triggered.connect(Events.exportCustomersToCsv)
+        globals.ui.actionImportCustomers.triggered.connect(Events.importCustomersFromCsv)
+        globals.ui.actionImportProducts.triggered.connect(Events.importProductsFromJson)
 
 
         #Reports

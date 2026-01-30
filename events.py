@@ -1,5 +1,6 @@
 import csv
 import datetime
+import json
 import os.path
 import shutil
 import sys
@@ -14,7 +15,6 @@ import connection
 import  globals
 import customers
 import styles
-
 
 
 class Events:
@@ -282,6 +282,150 @@ class Events:
 
         except Exception as e:
             print("Error en restoreBackup: ", e)
+
+    @staticmethod
+    def importCustomersFromCsv():
+        try:
+            filename, _ = globals.dialog_open.getOpenFileName(
+                None, "Import customer CSV", '', 'CSV Files (*.csv)'
+            )
+            if not filename: return
+
+            with open(filename, mode='r', encoding='utf-8') as file:
+                reader = csv.DictReader(file)
+                rows = list(reader)
+
+            new_count = 0
+            update_count = 0
+            final_data_to_import = []
+
+            csv_header_order = [
+                "DNI_NIE", "AddData", "Surname", "Name", "eMail", "Mobile",
+                "Address", "Province", "City", "InvoiceType", "Active"
+            ]
+
+            for row in rows:
+                dni = row.get("DNI_NIE", '').strip().upper()
+                if not dni: continue
+
+                if Connection.getCustomerData(dni, "dni"):
+                    update_count += 1
+                else:
+                    new_count += 1
+
+                formatted_row = [row.get(field, '') for field in csv_header_order]
+                final_data_to_import.append(formatted_row)
+
+            msg = (f"Summary of file: {len(rows)} records found.\n\n"
+                   f"- New customers to be created: {new_count}\n"
+                   f"- Existing customers to be updated: {update_count}\n\n"
+                   f"Do you want to proceed with the import?"
+                   )
+
+            mbox = QtWidgets.QMessageBox()
+            mbox.setIcon(QtWidgets.QMessageBox.Icon.Question)
+            mbox.setWindowIcon(QtGui.QIcon("img/gabrielgsd.jpg"))
+            mbox.setWindowTitle('Confirm Import')
+            mbox.setText(msg)
+            mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+            mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.No)
+
+            if mbox.exec() == QtWidgets.QMessageBox.StandardButton.No:
+                return
+
+            if not Connection.importCustomers(final_data_to_import):
+                mbox = QtWidgets.QMessageBox()
+                mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+                mbox.setWindowTitle("Database Error")
+                mbox.setText("An error occurred while saving data to the database.")
+                mbox.exec()
+                return
+
+            mbox = QtWidgets.QMessageBox()
+            mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
+            mbox.setWindowTitle("Success")
+            mbox.setText("Data imported successfully.")
+            mbox.exec()
+
+            customers.Customers.setTableData()
+            Events.loadProvinces()
+            Events.loadCities()
+
+        except Exception as e:
+            print("Error en importCustomersFromCsv: ", e)
+
+    @staticmethod
+    def importProductsFromJson():
+        try:
+            filename, _ = globals.dialog_open.getOpenFileName(
+                None, "Import Products JSON", '', 'JSON Files (*.json)'
+            )
+            if not filename: return
+
+            with open(filename, mode='r', encoding='utf-8') as file:
+                raw_data = json.load(file)
+
+            new_count = 0
+            update_count = 0
+            final_data_to_import = []
+
+            for product in raw_data:
+                product_id = product.get('id')
+                if not product_id: continue
+
+                if Connection.getProductData(product_id, "id"):
+                    update_count += 1
+                else:
+                    new_count += 1
+
+                formatted_row = [
+                    product.get('id'),
+                    product.get('name'),
+                    product.get('stock'),
+                    #ni
+                    product.get('family'),
+                    product.get('price'),
+                    product.get('currency', '€'),
+                ]
+                final_data_to_import.append(formatted_row)
+
+            msg = (f"Summary of file: {len(raw_data)} records found.\n\n"
+                   f"- New customers to be created: {new_count}\n"
+                   f"- Existing customers to be updated: {update_count}\n\n"
+                   f"Do you want to proceed with the import?"
+                   )
+
+            mbox = QtWidgets.QMessageBox()
+            mbox.setIcon(QtWidgets.QMessageBox.Icon.Question)
+            mbox.setWindowIcon(QtGui.QIcon("img/gabrielgsd.jpg"))
+            mbox.setWindowTitle('Confirm Import')
+            mbox.setText(msg)
+            mbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+            mbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.No)
+
+            if mbox.exec() == QtWidgets.QMessageBox.StandardButton.No:
+                return
+
+            if not Connection.importProducts(final_data_to_import):
+                mbox = QtWidgets.QMessageBox()
+                mbox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+                mbox.setWindowTitle("Database Error")
+                mbox.setText("An error occurred while saving data to the database.")
+                mbox.exec()
+                return
+
+            mbox = QtWidgets.QMessageBox()
+            mbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
+            mbox.setWindowTitle("Success")
+            mbox.setText("Data imported successfully.")
+            mbox.exec()
+
+            from products import Products
+            Products.clearData()
+            Products.setTableData()
+
+        except Exception as e:
+            print("Error en importProductsFromJson: ", e)
 
     @staticmethod
     def exportCustomersToCsv():

@@ -245,6 +245,36 @@ class Connection:
             print("Error setCustomerData: ", error)
 
     @staticmethod
+    def importCustomers(data):
+        db = QtSql.QSqlDatabase.database()
+        db.transaction()
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("""
+            INSERT OR REPLACE INTO customers 
+            (dni_nie, adddata, surname, name, mail, mobile, address, province, city, invoicetype, historical) 
+            VALUES (:dni_nie, :adddata, :surname, :name, :mail, :mobile, :address, :province, :city, :invoicetype, :historical)
+            """)
+
+            order_values = [":dni_nie", ":adddata", ":surname", ":name", ":mail", ":mobile",
+                        ":address", ":province", ":city", ":invoicetype", ":historical"]
+            for customer_data in data:
+                for i in range(len(order_values)):
+                    query.bindValue(order_values[i], customer_data[i])
+
+                if not query.exec():
+                    db.rollback()
+                    print(f"Error en inserción importCustomers: {query.lastError().text()}")
+                    return False
+
+            db.commit()
+            return True
+        except Exception as error:
+            db.rollback()
+            print("Error importCustomers: ", error)
+            return False
+
+    @staticmethod
     def saveSettings(data):
         """
             Saves or replaces application settings in the database.
@@ -464,6 +494,34 @@ class Connection:
         except Exception as error:
             print("Error getProductFamilies: ", error)
             return []
+
+    @staticmethod
+    def importProducts(data):
+        db = QtSql.QSqlDatabase()
+        db.transaction()
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare("""
+                INSERT OR REPLACE INTO products (code, name, stock, family, unit_price, currency)
+                VALUES (:code, :name, :stock, :family, :unit_price, :currency)
+            """)
+
+            order_values = [":code", ":name", ":stock", ":family", ":unit_price", ":currency"]
+
+            for product in data:
+                for i in range(len(product)):
+                    value_text = str(product[i])
+                    query.bindValue(order_values[i], value_text)
+
+                if not query.exec():
+                    db.rollback()
+                    print(f"Error en inserción importProducts: {query.lastError().text()}")
+                    return False
+
+            db.commit()
+            return True
+        except Exception as error:
+            print("Error importProducts: ", error)
 
 
     # Invoice section
