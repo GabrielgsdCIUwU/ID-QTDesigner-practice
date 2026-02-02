@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1153</width>
-    <height>851</height>
+    <width>1208</width>
+    <height>869</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,10 +19,51 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="1" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <item>
+       <widget class="QPushButton" name="btn_prev">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../img/prev.svg</normaloff>../img/prev.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_next">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../img/next.svg</normaloff>../img/next.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="autoExclusive">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
     <item row="0" column="0">
      <widget class="QTabWidget" name="pan_main">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_customer">
        <attribute name="title">
@@ -1129,7 +1170,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1153</width>
+     <width>1208</width>
      <height>21</height>
     </rect>
    </property>
@@ -1143,7 +1184,15 @@
      </property>
      <addaction name="actionExportCustomers"/>
     </widget>
+    <widget class="QMenu" name="menuImportData">
+     <property name="title">
+      <string>Import Data</string>
+     </property>
+     <addaction name="actionImportCustomers"/>
+     <addaction name="actionImportProducts"/>
+    </widget>
     <addaction name="actionSettings"/>
+    <addaction name="menuImportData"/>
     <addaction name="menuExport_Data"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
@@ -1280,6 +1329,16 @@
   <action name="actionProductbyfamilyReport">
    <property name="text">
     <string>Product by family Report</string>
+   </property>
+  </action>
+  <action name="actionImportCustomers">
+   <property name="text">
+    <string>Customers (.csv)</string>
+   </property>
+  </action>
+  <action name="actionImportProducts">
+   <property name="text">
+    <string>Products (.json)</string>
    </property>
   </action>
  </widget>

@@ -189,6 +189,66 @@ QPushButton#btn_del_cust:disabled, QPushButton#btn_delete_product:disabled, QPus
     color: #9ca3af;
 }
 
+/*Previous and Next button*/
+QPushButton#btn_prev {
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 8px;
+    min-width: 32px;
+    min-height: 32px;
+    color: #1f2937;
+    icon-size: 24px;
+}
+
+QPushButton#btn_prev:hover {
+    background-color: #60a5fa;
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+QPushButton#btn_prev:pressed {
+    background-color: #3b82f6;
+    border-color: #2563eb;
+    color: #ffffff;
+}
+
+QPushButton#btn_prev:disabled {
+    background-color: #EBEBEB;
+    border-color: #d1d5db;
+    color: #9ca3af;
+}
+
+/* Botón Siguiente - Light Mode */
+QPushButton#btn_next {
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 8px;
+    min-width: 32px;
+    min-height: 32px;
+    color: #1f2937;
+    icon-size: 24px;
+}
+
+QPushButton#btn_next:hover {
+    background-color: #60a5fa;
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+QPushButton#btn_next:pressed {
+    background-color: #3b82f6;
+    border-color: #2563eb;
+    color: #ffffff;
+}
+
+QPushButton#btn_next:disabled {
+    background-color: #EBEBEB;
+    border-color: #d1d5db;
+    color: #9ca3af;
+}
+
 /* Checkboxes */
 QCheckBox {
     color: #1f2937;

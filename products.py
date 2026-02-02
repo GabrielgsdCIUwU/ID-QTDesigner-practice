@@ -37,10 +37,15 @@ class Products:
             Loads the list of all products into the UI table.
         """
         try:
-            all_products = Connection.getProducts()
+            current_index = globals.ui.pan_main.currentIndex()
+            limit = globals.paginator.items_per_page
+            offset = globals.paginator.get_offset(current_index)
+
+            all_products = Connection.getProductsPaged(limit, offset)
 
             index = 0
             ui_table = globals.ui.table_product
+            ui_table.setRowCount(0)
             for product in all_products:
                 ui_table.setRowCount(index + 1)
                 ui_table.setItem(index, 0, QtWidgets.QTableWidgetItem(str(product[0])))

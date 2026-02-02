@@ -7,3 +7,4 @@ settings = None
 settings_ui = None
 theme_manager = None
 disabled_line_edits = []
+paginator = None

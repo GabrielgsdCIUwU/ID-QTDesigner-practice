@@ -697,3 +697,51 @@ class Connection:
             return False
 
         return True
+
+
+    # Pagination section
+    @staticmethod
+    def getTotalCount(table_name, criteria=None):
+        try:
+            query = QtSql.QSqlQuery()
+            sql = f"SELECT COUNT(*) FROM {table_name}"
+            if criteria:
+                sql += f" WHERE {criteria}"
+            query.prepare(sql)
+
+            if query.exec() and query.next():
+                return query.value(0)
+            return 0
+        except Exception as error:
+            print(f"Error getTotalCount, table: {table_name}:", error)
+            return 0
+
+    @staticmethod
+    def getCustomersPaged(limit, offset, historical=True):
+        criteria = "historical = 'True'" if historical else "1=1"
+
+        all_customers = []
+        query = QtSql.QSqlQuery()
+        query.prepare(f"SELECT * FROM customers WHERE {criteria} ORDER BY surname LIMIT :limit OFFSET :offset")
+        query.bindValue(":limit", str(limit))
+        query.bindValue(":offset", str(offset))
+        if query.exec():
+            while query.next():
+                row = [query.value(i) for i in range(query.record().count())]
+                all_customers.append(row)
+
+        return all_customers
+
+    @staticmethod
+    def getProductsPaged(limit, offset):
+        all_products = []
+        query = QtSql.QSqlQuery()
+        query.prepare(f"SELECT * FROM products ORDER BY code LIMIT :limit OFFSET :offset")
+        query.bindValue(":limit", str(limit))
+        query.bindValue(":offset", str(offset))
+
+        if query.exec():
+            while query.next():
+                row = [query.value(i) for i in range(query.record().count())]
+                all_products.append(row)
+        return all_products

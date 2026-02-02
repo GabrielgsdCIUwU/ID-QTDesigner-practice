@@ -12,6 +12,7 @@ import styles
 import  sys
 from ThemeManager import ThemeManager
 from reports import *
+from PaginationManager import PaginationManager
 
 class Main(QtWidgets.QMainWindow):
     def __init__(self):
@@ -30,6 +31,7 @@ class Main(QtWidgets.QMainWindow):
         globals.theme = ThemeManager()
 
 
+        self.paginatorManager()
         self.connect_signals_slot()
         self.connect_keyboard_signals()
 
@@ -141,7 +143,21 @@ class Main(QtWidgets.QMainWindow):
         self.shortcutCleanInvoice = QtGui.QShortcut(QtGui.QKeySequence("F11"), self)
         self.shortcutCleanInvoice.activated.connect(Invoice.clearData)
 
+    @staticmethod
+    def paginatorManager():
+        globals.paginator = PaginationManager(items_per_page=12)
 
+        globals.paginator.register_tab(0, "customers", Customers.setTableData, "historical = 'True'")
+        globals.paginator.register_tab(1, "products", Products.setTableData)
+
+        globals.ui.statusbar.addPermanentWidget(globals.paginator.lbl_info)
+
+        globals.ui.btn_next.clicked.connect(globals.paginator.next_page)
+        globals.ui.btn_prev.clicked.connect(globals.paginator.previous_page)
+
+        globals.ui.pan_main.currentChanged.connect(globals.paginator.update_labels)
+
+        globals.paginator.update_labels()
 
     @staticmethod
     def setDefaultValues():

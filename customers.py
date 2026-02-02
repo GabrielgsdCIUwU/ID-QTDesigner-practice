@@ -104,7 +104,11 @@ class Customers:
         :return: None
         """
         try:
-            all_customers = Connection.getCustomers(historical)
+            current_index = globals.ui.pan_main.currentIndex()
+            limit = globals.paginator.items_per_page
+            offset = globals.paginator.get_offset(current_index)
+
+            all_customers = Connection.getCustomersPaged(limit, offset, historical)
 
             def display_historical(input_historical):
                 if input_historical == "True":
@@ -114,6 +118,7 @@ class Customers:
 
             index = 0
             ui_table = globals.ui.table_customer
+            ui_table.setRowCount(0)
             for customer in all_customers:
                 ui_table.setRowCount(index + 1)
                 ui_table.setItem(index, 0, QtWidgets.QTableWidgetItem(str(customer[2])))
@@ -224,8 +229,13 @@ class Customers:
         :return: None
         """
         try:
+            globals.paginator.reset_tab(0)
             historical_checked = globals.ui.chkb_hystorical.isChecked()
+            globals.paginator.extra_criteria[0] = "historical = 'True'" if historical_checked else "1=1"
+
             Customers.setTableData(historical_checked)
+
+            globals.paginator.update_labels()
         except Exception as error:
             print("error en historicalCli ", error)
 
