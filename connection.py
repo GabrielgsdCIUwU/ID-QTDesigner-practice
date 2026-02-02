@@ -246,6 +246,14 @@ class Connection:
 
     @staticmethod
     def importCustomers(data):
+        """
+        Performs a bulk 'Insert or Replace' operation for customers within a transaction.
+
+        :param data: List of lists, where each sublist is a complete customer record.
+        :type data: list
+        :return: True if the transaction was committed successfully, False otherwise.
+        :rtype: bool
+        """
         db = QtSql.QSqlDatabase.database()
         db.transaction()
         try:
@@ -462,6 +470,14 @@ class Connection:
 
     @staticmethod
     def updateStockProductData(data):
+        """
+        Updates the stock quantity for a specific product identified by its code.
+
+        :param data: A list containing [product_code, new_stock_count].
+        :type data: list
+        :return: True if the update was successful, False otherwise.
+        :rtype: bool
+        """
         try:
             query = QtSql.QSqlQuery()
             query.prepare("UPDATE products SET"
@@ -482,6 +498,12 @@ class Connection:
 
     @staticmethod
     def getProductFamilies():
+        """
+        Retrieves a list of all unique product families/categories existing in the database.
+
+        :return: A list of strings representing unique product families.
+        :rtype: list
+        """
         try:
             query = QtSql.QSqlQuery()
             query.prepare("SELECT DISTINCT family FROM products")
@@ -497,6 +519,15 @@ class Connection:
 
     @staticmethod
     def importProducts(data):
+        """
+        Bulk imports product data into the database using a transaction for efficiency and safety.
+        Uses 'INSERT OR REPLACE' to handle existing product codes.
+
+        :param data: A list of product records, where each record is a list of its fields.
+        :type data: list
+        :return: True if the import was successful and committed, False otherwise.
+        :rtype: bool
+        """
         db = QtSql.QSqlDatabase()
         db.transaction()
         try:
@@ -702,6 +733,16 @@ class Connection:
     # Pagination section
     @staticmethod
     def getTotalCount(table_name, criteria=None):
+        """
+        Counts the total number of records in a specific table, optionally filtered by a SQL criteria.
+
+        :param table_name: The name of the database table to query.
+        :type table_name: str
+        :param criteria: Optional SQL WHERE clause (without the 'WHERE' keyword).
+        :type criteria: str | None
+        :return: The total number of records found.
+        :rtype: int
+        """
         try:
             query = QtSql.QSqlQuery()
             sql = f"SELECT COUNT(*) FROM {table_name}"
@@ -718,6 +759,18 @@ class Connection:
 
     @staticmethod
     def getCustomersPaged(limit, offset, historical=True):
+        """
+        Retrieves a specific subset of customers for pagination.
+
+        :param limit: Number of records to retrieve.
+        :type limit: int
+        :param offset: Starting point in the record set.
+        :type offset: int
+        :param historical: If True, filters for active customers only.
+        :type historical: bool
+        :return: List of customer data rows.
+        :rtype: list
+        """
         criteria = "historical = 'True'" if historical else "1=1"
 
         all_customers = []
@@ -734,6 +787,17 @@ class Connection:
 
     @staticmethod
     def getProductsPaged(limit, offset):
+        """
+        Retrieves a limited subset of products from the database for pagination purposes,
+            ordered by their internal code.
+
+        :param limit: The maximum number of records to return.
+        :type limit: int
+        :param offset: The number of records to skip before starting to return rows.
+        :type offset: int
+        :return: A list of product records, each as a list of values.
+        :rtype: list
+        """
         all_products = []
         query = QtSql.QSqlQuery()
         query.prepare(f"SELECT * FROM products ORDER BY code LIMIT :limit OFFSET :offset")

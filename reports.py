@@ -123,6 +123,18 @@ class Reports:
 
     @staticmethod
     def filterProducts(all_products_data, only_low_stock = False, stock_family = None):
+        """
+        Applies business logic filters to a list of products before generating a report.
+
+        :param all_products_data: The raw list of products from the DB.
+        :type all_products_data: list
+        :param only_low_stock: Filter for products with stock <= 5.
+        :type only_low_stock: bool
+        :param stock_family: Filter by a specific category name.
+        :type stock_family: str | None
+        :return: The filtered list of products.
+        :rtype: list
+        """
         filtered_products = all_products_data[:]
         if only_low_stock:
             search_on_all_products_data = filtered_products[:]
@@ -223,6 +235,12 @@ class Reports:
 
     @staticmethod
     def displayBusinessData(canvas_obj):
+        """
+        Draws the static business identification data (CIF, address, contact) on the report.
+
+        :param canvas_obj: The ReportLab canvas object.
+        :type canvas_obj: canvas.Canvas
+        """
         try:
             canvas_obj.setFont("Helvetica", 9)
             x = 25
@@ -242,6 +260,14 @@ class Reports:
 
     @staticmethod
     def footer(canvas_obj, title):
+        """
+        Draws the standard footer including date, report title, and page numbering.
+
+        :param canvas_obj: The ReportLab canvas object.
+        :type canvas_obj: canvas.Canvas
+        :param title: The title of the current report.
+        :type title: str
+        """
         try:
             canvas_obj.line(35, 50, 525, 50)
             today = datetime.datetime.today().strftime("%d/%m/%Y %H:%M:%S")
@@ -254,6 +280,16 @@ class Reports:
 
     @staticmethod
     def displayColumnDataHeaders(canvas_obj, columns_list, coords_list):
+        """
+        Draws the header row for a data table in the PDF report.
+
+        :param canvas_obj: The ReportLab canvas object.
+        :type canvas_obj: canvas.Canvas
+        :param columns_list: List of column names to display.
+        :type columns_list: list
+        :param coords_list: List of (x, y) tuples for each column position.
+        :type coords_list: list
+        """
         try:
             canvas_obj.setFont("Helvetica", 10)
             for i in range(len(columns_list)):
@@ -265,16 +301,46 @@ class Reports:
 
     @staticmethod
     def displayMaxDataLengthFromData(data, length=15):
+        """
+        Truncates a string and adds ellipses if it exceeds the specified length for UI/PDF constraints.
+
+        :param data: The input string to process.
+        :type data: str
+        :param length: Maximum allowed characters before truncation.
+        :type length: int
+        :return: The processed string (truncated or original).
+        :rtype: str
+        """
         if len(data) > length:
             return data[:length] + "..."
         return data
 
     @staticmethod
     def _displayHumanReadHistorical(historical):
+        """
+        Converts the database boolean-string status into a user-friendly label.
+
+        :param historical: The historical status from the database.
+        :type historical: str | bool
+        :return: 'Active' if true, 'Inactive' otherwise.
+        :rtype: str
+        """
         return "Active" if bool(historical) else "Inactive"
 
     @staticmethod
     def _createNextPage(canvas_obj, title, columns, coords):
+        """
+        Handles pagination by finalizing the current page and initializing a new one with headers.
+
+        :param canvas_obj: The ReportLab canvas object.
+        :type canvas_obj: canvas.Canvas
+        :param title: The report title for the new page.
+        :type title: str
+        :param columns: List of column headers.
+        :type columns: list
+        :param coords: List of coordinates for headers.
+        :type coords: list
+        """
         canvas_obj.setFont("Helvetica-Oblique", 8)
         canvas_obj.drawString(450, 75, "Página siguiente...")
         canvas_obj.showPage()
@@ -287,6 +353,14 @@ class Reports:
 
     @staticmethod
     def _displayCustomersData(c, all_customers_data):
+        """
+        Iterates through customer records and draws them as rows in the PDF document.
+
+        :param c: The ReportLab canvas object.
+        :type c: canvas.Canvas
+        :param all_customers_data: List of lists containing customer records.
+        :type all_customers_data: list
+        """
         x = 55
         y = 630
         for customer in all_customers_data:
@@ -311,6 +385,14 @@ class Reports:
 
     @staticmethod
     def _displayProdutsData(c, all_products_data):
+        """
+        Iterates through product records and draws them as rows in the PDF document.
+
+        :param c: The ReportLab canvas object.
+        :type c: canvas.Canvas
+        :param all_products_data: List of lists containing product records.
+        :type all_products_data: list
+        """
         y = 630
         for product in all_products_data:
             if y <= 90:
@@ -334,6 +416,18 @@ class Reports:
 
     @staticmethod
     def _displayTicketSalesData(c, title, all_tickets_data):
+        """
+        Draws the individual sale lines (products, amounts, prices) on the invoice ticket.
+
+        :param c: The ReportLab canvas object.
+        :type c: canvas.Canvas
+        :param title: Title of the document.
+        :type title: str
+        :param all_tickets_data: List of sale records for the current invoice.
+        :type all_tickets_data: list
+        :return: The last vertical Y position used on the page.
+        :rtype: float
+        """
 
         y = 630
         for product in all_tickets_data:
@@ -366,6 +460,14 @@ class Reports:
 
     @staticmethod
     def _displayTotalsData(c, y):
+        """
+        Draws the subtotal, taxes, and total amount at the bottom of the ticket.
+
+        :param c: The ReportLab canvas object.
+        :type c: canvas.Canvas
+        :param y: The vertical starting position for the totals block.
+        :type y: float
+        """
         try:
             if y < 150:
                 c.showPage()

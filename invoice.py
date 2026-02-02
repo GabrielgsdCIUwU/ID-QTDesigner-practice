@@ -503,6 +503,16 @@ class Invoice:
 
     @staticmethod
     def reduceStock(id_product, amount):
+        """
+        Updates the product inventory by subtracting the sold amount.
+
+        :param id_product: The ID/Code of the product.
+        :type id_product: int | str
+        :param amount: Quantity sold.
+        :type amount: int | str
+        :return: True if the database update was successful.
+        :rtype: bool
+        """
         try:
             product_data = Connection.getProductData(id_product, "id")
             current_stock = product_data[2]

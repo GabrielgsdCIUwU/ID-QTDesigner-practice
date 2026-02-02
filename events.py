@@ -285,6 +285,10 @@ class Events:
 
     @staticmethod
     def importCustomersFromCsv():
+        """
+        Opens a file dialog to select a CSV file and imports customer data into the database.
+        Includes a confirmation dialog with a summary of new vs. existing records.
+        """
         try:
             filename, _ = globals.dialog_open.getOpenFileName(
                 None, "Import customer CSV", '', 'CSV Files (*.csv)'
@@ -356,6 +360,10 @@ class Events:
 
     @staticmethod
     def importProductsFromJson():
+        """
+        Opens a file dialog to select a JSON file and imports product data into the database.
+        Includes stock validation and record summary.
+        """
         try:
             filename, _ = globals.dialog_open.getOpenFileName(
                 None, "Import Products JSON", '', 'JSON Files (*.json)'

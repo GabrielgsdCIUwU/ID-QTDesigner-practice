@@ -16,6 +16,10 @@ from PaginationManager import PaginationManager
 
 class Main(QtWidgets.QMainWindow):
     def __init__(self):
+        """
+        Main application constructor. Initializes the UI, database connection,
+        global managers, and event signal connections.
+        """
         super(Main, self).__init__()
         globals.ui = Ui_window()
         globals.ui.setupUi(self)
@@ -44,6 +48,10 @@ class Main(QtWidgets.QMainWindow):
         Invoice.initDataBoxes()
 
     def connect_signals_slot(self):
+        """
+        Connects all UI signals (button clicks, menu actions, editing finished)
+        to their respective controller functions and logic handlers.
+        """
         #conexion DB
         Customers.setTableData()
         Products.setTableData()
@@ -139,12 +147,19 @@ class Main(QtWidgets.QMainWindow):
 
 
     def connect_keyboard_signals(self):
+        """
+        Defines and connects application-wide keyboard shortcuts (e.g., F11 to clear invoice).
+        """
         #Invoice
         self.shortcutCleanInvoice = QtGui.QShortcut(QtGui.QKeySequence("F11"), self)
         self.shortcutCleanInvoice.activated.connect(Invoice.clearData)
 
     @staticmethod
     def paginatorManager():
+        """
+        Initializes the global pagination manager and registers the main tabs
+        (Customers and Products) for paginated database views.
+        """
         globals.paginator = PaginationManager(items_per_page=12)
 
         globals.paginator.register_tab(0, "customers", Customers.setTableData, "historical = 'True'")
@@ -164,6 +179,10 @@ class Main(QtWidgets.QMainWindow):
         globals.ui.le_date.setText('')
 
     def showFamilyReportSelector(self):
+        """
+        Displays a selection dialog with all available product families and
+        generates a PDF report for the chosen family.
+        """
         try:
             families = Connection.getProductFamilies()
 
